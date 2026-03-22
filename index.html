@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Вектор">
+<meta name="theme-color" content="#FAF9F5">
+<title>Вектор — Развитие</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🧭%3C/text%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=Playfair+Display:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden}
+body{-webkit-font-smoothing:antialiased;-webkit-user-select:none;user-select:auto}
+input,textarea{-webkit-user-select:auto;user-select:auto}
+::-webkit-scrollbar{display:none}
+:root{
+  --bg:#FAF9F5;--surf:#fff;--t1:#1C1C1E;--t2:#8A8985;--t3:#C4C3BE;
+  --acc:#1A7AE6;--ok:#2EBD52;--del:#E8453A;--warn:#E89A0A;
+  --idea:#D4770B;--skill:#2A9D8F;--insight:#7C5DC7;--action:#C75D8A;
+  --brd:rgba(40,35,20,.07);--brd2:rgba(40,35,20,.13);
+  --sh:0 1px 5px rgba(30,25,10,.05);--sh2:0 4px 16px rgba(30,25,10,.08);
+  --fn:'DM Sans',-apple-system,sans-serif;--fs:'Playfair Display',Georgia,serif;
+  --st:env(safe-area-inset-top,0px);--sb:env(safe-area-inset-bottom,0px);
+}
+@media(prefers-color-scheme:dark){
+  :root{--bg:#1A1A1D;--surf:#2C2C2E;--t1:#F0EFEA;--t2:#9A9A9A;--t3:#5A5A5A;--brd:rgba(255,255,255,.08);--brd2:rgba(255,255,255,.15)}
+}
+.app{width:100%;max-width:480px;margin:0 auto;height:100vh;height:100dvh;display:flex;flex-direction:column;background:var(--bg);position:relative;overflow:hidden;padding-top:var(--st);font-family:var(--fn);color:var(--t1)}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;transition:opacity .25s,transform .3s cubic-bezier(.22,1,.36,1);padding-top:var(--st)}
+.screen.off{opacity:0;pointer-events:none;transform:translateY(14px)}
+
+/* LOGIN */
+.login-wrap{flex:1;display:flex;flex-direction:column;padding:60px 28px 36px}
+.login-lbl{font-size:11px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:var(--t3);margin-bottom:4px}
+.login-logo{font-family:var(--fs);font-size:38px;font-weight:500;color:var(--t1);letter-spacing:-.6px;line-height:1.05;margin-bottom:8px}
+.login-sub{font-size:14px;color:var(--t2);line-height:1.55;margin-bottom:32px}
+.f-lbl{display:block;font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--t3);margin-bottom:6px}
+.f-inp{width:100%;border:1.5px solid var(--brd2);border-radius:8px;padding:13px 14px;font-family:var(--fn);font-size:16px;color:var(--t1);background:var(--surf);outline:none;transition:border-color .15s;margin-bottom:4px}
+.f-inp:focus{border-color:var(--acc)}
+.f-hint{font-size:11px;color:var(--t3);line-height:1.4;margin-bottom:14px}
+.login-btn{width:100%;padding:14px;border-radius:8px;border:none;background:var(--acc);color:#fff;font-family:var(--fn);font-size:16px;font-weight:500;cursor:pointer;transition:transform .2s cubic-bezier(.34,1.56,.64,1)}
+.login-btn:active{transform:scale(.96)}
+
+/* HEADER */
+.hdr{padding:12px 20px 0;flex-shrink:0}
+.hdr-row{display:flex;align-items:flex-end;justify-content:space-between}
+.hdr-date{font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--t3);margin-bottom:1px}
+.hdr-logo{font-family:var(--fs);font-size:20px;font-weight:500;color:var(--t1);letter-spacing:-.4px}
+.hdr-right{display:flex;align-items:center;gap:6px;padding-bottom:2px}
+.icon-btn{width:32px;height:32px;border-radius:50%;border:none;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s}
+.icon-btn:active{background:var(--brd)}
+.icon-btn svg{width:17px;height:17px;stroke:var(--t2);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.status-row{display:flex;align-items:center;gap:5px;padding:4px 20px 0;font-size:11px;color:var(--t3)}
+.sdot{width:5px;height:5px;border-radius:50%;background:var(--t3);transition:background .3s}
+.sdot.on{background:var(--ok)}.sdot.sy{background:var(--warn);animation:pulse .9s infinite}
+
+/* TABS */
+.tabs-wrap{padding:8px 16px 0}
+.tabs{display:flex;background:rgba(0,0,0,.04);border-radius:8px;padding:2px}
+@media(prefers-color-scheme:dark){.tabs{background:rgba(255,255,255,.06)}}
+.tab{flex:1;text-align:center;font-size:12px;font-weight:500;padding:7px 2px;border-radius:6px;cursor:pointer;color:var(--t2);transition:all .2s cubic-bezier(.22,1,.36,1)}
+.tab.on{background:var(--surf);color:var(--t1);box-shadow:0 1px 3px rgba(0,0,0,.07)}
+.badge{display:inline-flex;align-items:center;justify-content:center;min-width:16px;height:16px;border-radius:8px;font-size:10px;font-weight:600;padding:0 4px;margin-left:2px;vertical-align:middle;margin-bottom:1px}
+
+/* MAIN */
+.main{flex:1;overflow-y:auto;overflow-x:hidden;padding:10px 16px 0;-webkit-overflow-scrolling:touch}
+
+/* MORNING VECTOR */
+.vec-block{background:var(--surf);border-radius:12px;border:0.5px solid rgba(26,122,230,.18);padding:13px 15px;margin-bottom:10px;cursor:pointer;transition:transform .2s cubic-bezier(.22,1,.36,1)}
+.vec-block:active{transform:scale(.985)}
+.vec-lbl{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;margin-bottom:5px}
+.vec-text{font-family:var(--fs);font-style:italic;font-size:13px;color:var(--t1);line-height:1.5}
+.vec-empty{font-size:12px;color:var(--t3);font-style:italic}
+
+/* PROGRESS BLOCK */
+.prog-block{background:var(--surf);border-radius:12px;border:0.5px solid rgba(42,157,143,.18);padding:13px 15px;margin-bottom:10px}
+.prog-lbl{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--skill);margin-bottom:8px}
+.prog-bars{display:flex;flex-direction:column;gap:6px}
+.prog-row{display:flex;align-items:center;gap:8px}
+.prog-name{font-size:11px;color:var(--t2);width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.prog-bar{flex:1;height:4px;background:rgba(42,157,143,.1);border-radius:2px;overflow:hidden}
+.prog-fill{height:100%;background:var(--skill);border-radius:2px;transition:width .4s cubic-bezier(.22,1,.36,1)}
+.prog-pct{font-size:10px;color:var(--t3);width:28px;text-align:right}
+
+/* IDEAS PIPELINE */
+.pipe-block{background:var(--surf);border-radius:12px;border:0.5px solid rgba(212,119,11,.18);padding:13px 15px;margin-bottom:10px;cursor:pointer;transition:transform .2s cubic-bezier(.22,1,.36,1)}
+.pipe-block:active{transform:scale(.985)}
+.pipe-lbl{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--idea);margin-bottom:5px}
+.pipe-stages{display:flex;gap:4px;align-items:center;margin-bottom:6px}
+.pipe-dot{width:7px;height:7px;border-radius:50%;background:rgba(212,119,11,.15)}
+.pipe-dot.active{background:var(--idea)}
+.pipe-text{font-size:12px;color:var(--t2);line-height:1.4}
+.pipe-text b{font-weight:500;color:var(--t1)}
+
+/* WEEK INSIGHT */
+.ai-week{background:var(--surf);border-radius:12px;border:0.5px solid rgba(124,93,199,.14);padding:13px 15px;margin-bottom:10px;cursor:pointer;transition:transform .2s cubic-bezier(.22,1,.36,1)}
+.ai-week:active{transform:scale(.985)}
+.ai-week-lbl{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--insight);margin-bottom:5px}
+.ai-wdot{width:5px;height:5px;border-radius:50%;background:var(--insight);animation:pulse 1.4s infinite}
+.ai-week-text{font-family:var(--fs);font-style:italic;font-size:13px;color:var(--t1);line-height:1.5}
+
+/* ENTRIES */
+.sec{font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--t3);margin-bottom:8px;margin-top:2px}
+.stack{position:relative;height:260px;margin-bottom:8px}
+.ecard{position:absolute;left:0;right:0;top:0;background:var(--surf);border-radius:12px;border:0.5px solid var(--brd2);box-shadow:var(--sh);padding:12px 14px;cursor:pointer;will-change:transform}
+.ecard.top{z-index:3}
+.ecard.mid{transform:translateY(5px) scale(.97);z-index:2;pointer-events:none}
+.ecard.bot{transform:translateY(10px) scale(.94);z-index:1;pointer-events:none}
+.ecard-header{display:flex;align-items:center;gap:6px;margin-bottom:5px}
+.ecard-type{font-size:9px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;padding:2px 7px;border-radius:100px}
+.ecard-day{font-size:11px;color:var(--t3);font-weight:500}
+.ecard-text{font-size:13px;color:var(--t2);line-height:1.45;margin-bottom:6px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.ecard-title{font-size:14px;font-weight:500;color:var(--t1);margin-bottom:4px;line-height:1.3}
+.ai-preview{font-family:var(--fs);font-style:italic;font-size:12px;line-height:1.4;padding-left:8px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;border-left:2px solid}
+.ai-preview.none{color:var(--t3);border-left-color:var(--brd2);font-style:normal;font-family:var(--fn)}
+.swipe-hint{display:flex;align-items:center;justify-content:center;gap:6px;font-size:11px;color:var(--t3);margin-bottom:10px}
+
+/* SKILL TAGS */
+.skill-tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px}
+.skill-tag{font-size:10px;font-weight:500;padding:2px 7px;border-radius:100px;background:rgba(42,157,143,.08);color:var(--skill)}
+
+/* IDEA STAGE */
+.idea-stage{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:500;padding:2px 8px;border-radius:100px;margin-bottom:6px}
+
+/* EMPTY */
+.empty{text-align:center;padding:40px 20px;color:var(--t3)}
+.empty-ico{width:32px;height:32px;border-radius:50%;background:var(--brd);margin:0 auto 12px;display:flex;align-items:center;justify-content:center}
+.empty-ico svg{width:15px;height:15px;stroke:var(--t3);stroke-width:2;fill:none;stroke-linecap:round}
+.empty-t{font-family:var(--fs);font-size:17px;color:var(--t2);font-weight:500;margin-bottom:4px}
+.empty-s{font-size:13px;line-height:1.5}
+
+/* BOTTOM BAR */
+.bbar{padding:8px 20px;padding-bottom:10px;background:rgba(250,249,245,.96);border-top:0.5px solid var(--brd);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+@media(prefers-color-scheme:dark){.bbar{background:rgba(26,26,29,.96)}}
+.bbar-stats{display:flex;gap:16px}
+.sn{font-family:var(--fs);font-size:18px;font-weight:500;color:var(--t1);line-height:1}
+.sl{font-size:10px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;color:var(--t3);margin-top:2px}
+.bbar-btns{display:flex;gap:8px}
+.fab{width:44px;height:44px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .2s cubic-bezier(.34,1.56,.64,1)}
+.fab:active{transform:scale(.88)}
+.fab svg{stroke-width:2.5;stroke-linecap:round;fill:none}
+
+/* OVERLAY + SHEETS */
+.overlay{position:fixed;inset:0;background:rgba(20,18,10,.22);z-index:200;opacity:0;pointer-events:none;transition:opacity .25s;backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px)}
+.overlay.on{opacity:1;pointer-events:all}
+.sheet{position:fixed;bottom:0;left:50%;transform:translateX(-50%) translateY(102%);width:100%;max-width:480px;z-index:210;background:var(--surf);border-radius:16px 16px 0 0;transition:transform .35s cubic-bezier(.22,1,.36,1);padding-bottom:var(--sb);max-height:92vh;overflow-y:auto}
+.sheet.on{transform:translateX(-50%) translateY(0)}
+.sh-bar{width:28px;height:3px;background:rgba(40,35,20,.14);border-radius:2px;margin:10px auto 0}
+@media(prefers-color-scheme:dark){.sh-bar{background:rgba(255,255,255,.2)}}
+.sh-body{padding:16px 20px 28px}
+.sh-title{font-family:var(--fs);font-size:18px;font-weight:500;color:var(--t1);margin-bottom:3px;letter-spacing:-.2px;line-height:1.3}
+.sh-sub{font-size:13px;color:var(--t2);margin-bottom:14px}
+.sh-sec{background:var(--bg);border-radius:10px;padding:12px 14px;margin-bottom:10px;border:0.5px solid var(--brd2)}
+.sh-slbl{font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--t3);margin-bottom:5px}
+.sh-stext{font-size:13px;color:var(--t1);line-height:1.55}
+.ai-answer{font-family:var(--fs);font-style:italic;font-size:14px;color:var(--t1);line-height:1.65}
+
+/* ADD ENTRY */
+.type-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.type-btn{flex:1;min-width:calc(25% - 6px);padding:10px 4px;border-radius:8px;border:1.5px solid var(--brd2);background:transparent;font-family:var(--fn);font-size:12px;font-weight:500;color:var(--t2);cursor:pointer;transition:all .15s;text-align:center}
+.type-btn.sel{color:#fff}
+.add-ta{width:100%;border:1.5px solid var(--brd2);border-radius:8px;padding:11px 13px;font-family:var(--fn);font-size:15px;color:var(--t1);resize:none;background:var(--bg);outline:none;line-height:1.55;transition:border-color .15s}
+.add-ta:focus{border-color:var(--acc)}
+.add-inp{width:100%;border:1.5px solid var(--brd2);border-radius:8px;padding:11px 13px;font-family:var(--fn);font-size:15px;color:var(--t1);background:var(--bg);outline:none;transition:border-color .15s;margin-bottom:8px}
+.add-inp:focus{border-color:var(--acc)}
+.guide-box{font-size:11px;color:var(--t2);line-height:1.5;padding:8px 10px;border-radius:8px;border:0.5px solid;margin-bottom:10px;display:none}
+.guide-box.on{display:block}
+
+/* IDEA FIELDS */
+.idea-fields{display:none;flex-direction:column;gap:8px;margin-bottom:10px}
+.idea-fields.on{display:flex}
+.idea-field{position:relative}
+.idea-label{position:absolute;left:10px;top:8px;font-size:9px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;color:var(--idea);pointer-events:none;z-index:1}
+.idea-ta{width:100%;border:1.5px solid var(--brd2);border-radius:8px;padding:24px 11px 9px;font-family:var(--fn);font-size:14px;color:var(--t1);resize:none;background:var(--bg);outline:none;line-height:1.5;transition:border-color .15s}
+.idea-ta:focus{border-color:var(--idea)}
+
+/* SKILL FIELDS */
+.skill-fields{display:none;flex-direction:column;gap:8px;margin-bottom:10px}
+.skill-fields.on{display:flex}
+.skill-pick{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px}
+.skill-opt{padding:6px 12px;border-radius:100px;border:1.5px solid var(--brd2);background:transparent;font-family:var(--fn);font-size:12px;color:var(--t2);cursor:pointer;transition:all .15s}
+.skill-opt.sel{background:var(--skill);color:#fff;border-color:var(--skill)}
+.skill-opt:active{transform:scale(.95)}
+.prog-pick{display:flex;gap:3px;align-items:center;margin-top:4px}
+.prog-opt{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--brd2);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:11px;font-weight:500;color:var(--t2);transition:all .15s}
+.prog-opt.sel{background:var(--skill);color:#fff;border-color:var(--skill)}
+
+/* BUTTONS */
+.sh-btns{display:flex;gap:8px;margin-top:12px}
+.btn-g{flex:1;padding:10px;border-radius:8px;border:1.5px solid var(--brd2);background:transparent;font-family:var(--fn);font-size:14px;color:var(--t2);cursor:pointer;transition:transform .15s}
+.btn-g:active{transform:scale(.96)}
+.btn-p{flex:2;padding:10px;border-radius:8px;border:none;background:var(--acc);font-family:var(--fn);font-size:14px;color:#fff;font-weight:500;cursor:pointer;transition:transform .2s cubic-bezier(.34,1.56,.64,1)}
+.btn-p:active{transform:scale(.96)}
+.btn-p:disabled{opacity:.6;pointer-events:none}
+.btn-del{background:transparent!important;color:var(--del)!important;border-color:rgba(232,69,58,.2)!important;flex:1!important}
+
+/* SETTINGS */
+.set-field{margin-bottom:14px}
+.set-lbl{display:block;font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--t3);margin-bottom:6px}
+.set-inp{width:100%;border:1.5px solid var(--brd2);border-radius:8px;padding:10px 12px;font-family:var(--fn);font-size:13px;color:var(--t1);background:var(--bg);outline:none;transition:border-color .15s;resize:none;line-height:1.6}
+.set-inp:focus{border-color:var(--acc)}
+.set-hint{font-size:11px;color:var(--t3);margin-top:4px;line-height:1.4}
+.set-div{height:0.5px;background:var(--brd);margin:6px 0 14px}
+
+/* TOAST */
+.toast{position:fixed;bottom:calc(74px + var(--sb));left:50%;transform:translateX(-50%) translateY(12px);background:var(--t1);color:var(--bg);font-size:13px;font-weight:500;padding:10px 20px;border-radius:100px;z-index:500;opacity:0;transition:opacity .2s,transform .2s cubic-bezier(.22,1,.36,1);pointer-events:none;box-shadow:0 6px 18px rgba(30,25,10,.14);white-space:nowrap}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.spin{width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite;flex-shrink:0;display:inline-block}
+
+/* REVEAL CARD */
+.reveal-wrap{position:fixed;inset:0;z-index:600;display:flex;flex-direction:column;pointer-events:none;opacity:0;transition:opacity .4s}
+.reveal-wrap.on{opacity:1;pointer-events:all}
+.reveal-bg{position:absolute;inset:0;background:rgba(20,18,10,.5);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.reveal-card{position:relative;margin:auto 12px;max-height:88vh;overflow-y:auto;background:var(--surf);border-radius:20px;padding:32px 24px 28px;box-shadow:0 24px 80px rgba(10,8,4,.25);transform:scale(.92) translateY(20px);transition:transform .45s cubic-bezier(.22,1,.36,1);display:flex;flex-direction:column;gap:16px}
+.reveal-wrap.on .reveal-card{transform:scale(1) translateY(0)}
+.reveal-wrap.out{opacity:0;transition:opacity .3s}
+.reveal-wrap.out .reveal-card{transform:scale(.95) translateY(10px);transition:transform .3s}
+.reveal-role{display:inline-flex;align-items:center;gap:6px;align-self:flex-start}
+.reveal-role-dot{width:7px;height:7px;border-radius:50%}
+.reveal-role-name{font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+.reveal-text{font-family:var(--fs);font-style:italic;font-size:20px;line-height:1.55;color:var(--t1);letter-spacing:-.2px}
+.reveal-src{font-size:12px;color:var(--t3);line-height:1.5;padding-top:4px;border-top:0.5px solid var(--brd)}
+.reveal-src b{font-weight:500;color:var(--t2);font-style:normal}
+.reveal-hint{font-size:11px;color:var(--t3);text-align:center;margin-top:4px;opacity:.7}
+
+/* SKILL MANAGE */
+.skill-item{background:var(--bg);border-radius:10px;border:0.5px solid var(--brd2);padding:11px 13px;display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.skill-item-name{font-size:13px;font-weight:500;color:var(--t1);flex:1}
+.skill-item-lvl{font-size:11px;color:var(--skill);font-weight:500}
+.skill-item-del{width:24px;height:24px;border-radius:50%;border:none;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.skill-item-del:active{background:rgba(232,69,58,.08)}
+.skill-item-del svg{width:14px;height:14px;stroke:var(--del);stroke-width:2;fill:none;stroke-linecap:round}
+.add-skill-row{display:flex;gap:6px;margin-top:6px}
+.add-skill-inp{flex:1;border:1.5px solid var(--brd2);border-radius:8px;padding:8px 10px;font-family:var(--fn);font-size:13px;color:var(--t1);background:var(--bg);outline:none}
+.add-skill-inp:focus{border-color:var(--skill)}
+.add-skill-btn{padding:8px 14px;border-radius:8px;border:none;background:var(--skill);color:#fff;font-family:var(--fn);font-size:12px;font-weight:500;cursor:pointer}
+
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+@keyframes fadein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.fi{animation:fadein .3s cubic-bezier(.22,1,.36,1)}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="toast" id="toast"></div>
+  <div class="reveal-wrap" id="revealWrap" onclick="dismissReveal()">
+    <div class="reveal-bg"></div>
+    <div class="reveal-card" id="revealCard"></div>
+  </div>
+  <div class="overlay" id="ov" onclick="closeSheet()"></div>
+
+  <!-- LOGIN -->
+  <div class="screen" id="sLogin">
+    <div class="login-wrap">
+      <div class="login-lbl">развитие</div>
+      <div class="login-logo">Вектор</div>
+      <div class="login-sub">Идеи, навыки, инсайты.<br>Персональная траектория роста с AI-анализом.</div>
+      <span class="f-lbl">Уникальный логин</span>
+      <input class="f-inp" id="inName" type="text" placeholder="придумай уникальный логин" autocomplete="off" maxlength="32">
+      <div class="f-hint">Твой ID в системе. Регистр важен. Одинаковый на всех устройствах.</div>
+      <button class="login-btn" onclick="doLogin()">Войти →</button>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="screen off" id="sMain">
+    <div class="hdr">
+      <div class="hdr-row">
+        <div>
+          <div class="hdr-date" id="hDate"></div>
+          <div class="hdr-logo">Вектор</div>
+        </div>
+        <div class="hdr-right">
+          <button class="icon-btn" onclick="openSkillsManage()">
+            <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+          </button>
+          <button class="icon-btn" onclick="openSettings()">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="status-row"><div class="sdot" id="sdot"></div><span id="stxt" style="font-size:11px">—</span></div>
+    </div>
+    <div class="tabs-wrap">
+      <div class="tabs">
+        <div class="tab on" id="tabAll" onclick="switchTab('all')">Всё</div>
+        <div class="tab" id="tabIdeas" onclick="switchTab('ideas')">Идеи<span class="badge" id="bIdeas" style="background:rgba(212,119,11,.1);color:var(--idea)">0</span></div>
+        <div class="tab" id="tabSkills" onclick="switchTab('skills')">Навыки<span class="badge" id="bSkills" style="background:rgba(42,157,143,.1);color:var(--skill)">0</span></div>
+        <div class="tab" id="tabInsights" onclick="switchTab('insights')">Инсайты</div>
+      </div>
+    </div>
+    <div class="main" id="mainContent"></div>
+    <div class="bbar">
+      <div class="bbar-stats">
+        <div><div class="sn" id="statTotal">0</div><div class="sl">записей</div></div>
+        <div><div class="sn" id="statStreak">0</div><div class="sl">серия</div></div>
+        <div><div class="sn" id="statIdeas">0</div><div class="sl">идей</div></div>
+      </div>
+      <div class="bbar-btns">
+        <button class="fab" onclick="openAdd()" style="background:var(--acc);box-shadow:0 3px 12px rgba(26,122,230,.25)">
+          <svg width="18" height="18" viewBox="0 0 24 24" stroke="#fff"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SHEET: entry detail -->
+  <div class="sheet" id="shEntry"><div class="sh-bar"></div><div class="sh-body" id="shEntryBody"></div></div>
+
+  <!-- SHEET: add entry -->
+  <div class="sheet" id="shAdd">
+    <div class="sh-bar"></div>
+    <div class="sh-body">
+      <div class="sh-title">Новая запись</div>
+      <div class="sh-sub">Что ты узнал, придумал или сделал</div>
+      <div class="type-row">
+        <div class="type-btn sel" id="tb-idea" onclick="selType('idea',this)" style="background:var(--idea);border-color:var(--idea)">💡 Идея</div>
+        <div class="type-btn" id="tb-skill" onclick="selType('skill',this)">📚 Навык</div>
+        <div class="type-btn" id="tb-insight" onclick="selType('insight',this)">⚡ Инсайт</div>
+        <div class="type-btn" id="tb-action" onclick="selType('action',this)">🎯 Действие</div>
+      </div>
+      <!-- IDEA GUIDE -->
+      <div class="guide-box" id="ideaGuide" style="color:var(--idea);border-color:rgba(212,119,11,.2);background:rgba(212,119,11,.04)">
+        <b>Бизнес-идея</b> — опиши суть, для кого и какую проблему решает. Claude оценит потенциал и подскажет первый шаг.
+      </div>
+      <!-- SKILL GUIDE -->
+      <div class="guide-box" id="skillGuide" style="color:var(--skill);border-color:rgba(42,157,143,.2);background:rgba(42,157,143,.04)">
+        <b>Обучение</b> — что изучаешь, что понял, какой прогресс. Claude поможет структурировать знания.
+      </div>
+      <!-- INSIGHT GUIDE -->
+      <div class="guide-box" id="insightGuide" style="color:var(--insight);border-color:rgba(124,93,199,.2);background:rgba(124,93,199,.04)">
+        <b>Инсайт</b> — наблюдение, вывод, открытие. Claude найдёт связь с твоей траекторией.
+      </div>
+      <!-- ACTION GUIDE -->
+      <div class="guide-box" id="actionGuide" style="color:var(--action);border-color:rgba(199,93,138,.2);background:rgba(199,93,138,.04)">
+        <b>Действие</b> — что конкретно сделал для роста. Claude отразит прогресс.
+      </div>
+      <!-- IDEA FIELDS -->
+      <div class="idea-fields" id="ideaFields">
+        <div class="idea-field"><div class="idea-label">Суть идеи</div><textarea class="idea-ta" id="ideaWhat" rows="2" placeholder="Что за идея?"></textarea></div>
+        <div class="idea-field"><div class="idea-label">Для кого</div><textarea class="idea-ta" id="ideaWho" rows="1" placeholder="Целевая аудитория"></textarea></div>
+        <div class="idea-field"><div class="idea-label">Проблема</div><textarea class="idea-ta" id="ideaProblem" rows="2" placeholder="Какую боль решает?"></textarea></div>
+        <div class="idea-field"><div class="idea-label">Ресурсы</div><textarea class="idea-ta" id="ideaRes" rows="1" placeholder="Что уже есть? Что нужно?"></textarea></div>
+      </div>
+      <!-- SKILL FIELDS -->
+      <div class="skill-fields" id="skillFields">
+        <div style="margin-bottom:4px">
+          <span class="f-lbl" style="color:var(--skill)">Навык</span>
+          <div class="skill-pick" id="skillPick"></div>
+        </div>
+        <div>
+          <span class="f-lbl" style="color:var(--skill)">Прогресс</span>
+          <div class="prog-pick" id="progPick"></div>
+        </div>
+      </div>
+      <!-- GENERAL TEXT -->
+      <textarea class="add-ta" id="addText" rows="5" placeholder="Что узнал, понял, сделал?"></textarea>
+      <div class="sh-btns">
+        <button class="btn-g" onclick="closeSheet()">Отмена</button>
+        <button class="btn-p" onclick="saveEntry()">Сохранить</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SHEET: week insight -->
+  <div class="sheet" id="shWeek"><div class="sh-bar"></div><div class="sh-body" id="shWeekBody"></div></div>
+
+  <!-- SHEET: skills manage -->
+  <div class="sheet" id="shSkills">
+    <div class="sh-bar"></div>
+    <div class="sh-body">
+      <div class="sh-title">Навыки</div>
+      <div class="sh-sub">Направления, которые ты развиваешь</div>
+      <div id="skillsList"></div>
+      <div class="add-skill-row">
+        <input class="add-skill-inp" id="newSkillInp" placeholder="Новый навык...">
+        <button class="add-skill-btn" onclick="addSkill()">+</button>
+      </div>
+      <div class="sh-btns" style="margin-top:14px">
+        <button class="btn-g" style="width:100%" onclick="closeSheet()">Закрыть</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SHEET: settings -->
+  <div class="sheet" id="shSettings">
+    <div class="sh-bar"></div>
+    <div class="sh-body">
+      <div class="sh-title" style="margin-bottom:16px">Настройки</div>
+      <div class="set-field">
+        <span class="set-lbl">Anthropic API Key</span>
+        <input class="set-inp" id="sKey" type="password" placeholder="sk-ant-api03-...">
+        <div class="set-hint">console.anthropic.com → API Keys.</div>
+      </div>
+      <div class="set-div"></div>
+      <div class="set-field">
+        <span class="set-lbl">Контекст обо мне</span>
+        <textarea class="set-inp" id="sCtx" rows="5" placeholder="Кто ты, чем занимаешься, что важно"></textarea>
+        <div class="set-hint">Добавляется к каждому промпту Claude.</div>
+      </div>
+      <div class="set-field">
+        <span class="set-lbl" style="color:var(--idea)">Промпт для идей</span>
+        <textarea class="set-inp" id="sIdea" rows="4"></textarea>
+      </div>
+      <div class="set-field">
+        <span class="set-lbl" style="color:var(--skill)">Промпт для навыков</span>
+        <textarea class="set-inp" id="sSkill" rows="4"></textarea>
+      </div>
+      <div class="set-field">
+        <span class="set-lbl" style="color:var(--insight)">Промпт для инсайтов</span>
+        <textarea class="set-inp" id="sInsight" rows="4"></textarea>
+      </div>
+      <div class="set-field">
+        <span class="set-lbl" style="color:var(--action)">Промпт для действий</span>
+        <textarea class="set-inp" id="sAction" rows="4"></textarea>
+      </div>
+      <div class="sh-btns" style="margin-top:4px">
+        <button class="btn-g" onclick="closeSheet()">Отмена</button>
+        <button class="btn-p" onclick="saveSettings()">Сохранить</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══ TINYGESTURE 3.0 ═══
+let passiveIfSupported=false;try{window.addEventListener('test',null,Object.defineProperty({},'passive',{get:function(){passiveIfSupported={passive:true};}}));}catch(e){}
+class TinyGesture{constructor(element,options){this.element=element;this.touch1=null;this.touchStartX=null;this.touchStartY=null;this.touchEndX=null;this.touchEndY=null;this.touchMove1=null;this.touchMoveX=null;this.touchMoveY=null;this.velocityX=null;this.velocityY=null;this.longPressTimer=null;this.doubleTapTimer=null;this.doubleTapWaiting=false;this.thresholdX=0;this.thresholdY=0;this.disregardVelocityThresholdX=0;this.disregardVelocityThresholdY=0;this.swipingHorizontal=false;this.swipingVertical=false;this.swipingDirection=null;this.handlers={panstart:[],panmove:[],panend:[],swipeleft:[],swiperight:[],swipeup:[],swipedown:[],tap:[],doubletap:[],longpress:[]};this._onTouchStart=this.onTouchStart.bind(this);this._onTouchMove=this.onTouchMove.bind(this);this._onTouchEnd=this.onTouchEnd.bind(this);this.opts=Object.assign({},TinyGesture.defaults,options);this.element.addEventListener('touchstart',this._onTouchStart,passiveIfSupported);this.element.addEventListener('touchmove',this._onTouchMove,passiveIfSupported);this.element.addEventListener('touchend',this._onTouchEnd,passiveIfSupported);if(this.opts.mouseSupport&&!('ontouchstart'in window)){this.element.addEventListener('mousedown',this._onTouchStart,passiveIfSupported);document.addEventListener('mousemove',this._onTouchMove,passiveIfSupported);document.addEventListener('mouseup',this._onTouchEnd,passiveIfSupported);}}destroy(){this.element.removeEventListener('touchstart',this._onTouchStart);this.element.removeEventListener('touchmove',this._onTouchMove);this.element.removeEventListener('touchend',this._onTouchEnd);this.element.removeEventListener('mousedown',this._onTouchStart);document.removeEventListener('mousemove',this._onTouchMove);document.removeEventListener('mouseup',this._onTouchEnd);clearTimeout(this.longPressTimer);clearTimeout(this.doubleTapTimer);}on(type,fn){if(this.handlers[type]){this.handlers[type].push(fn);return{cancel:()=>this.off(type,fn)};}}off(type,fn){if(this.handlers[type]){const i=this.handlers[type].indexOf(fn);if(i!==-1)this.handlers[type].splice(i,1);}}fire(type,e){for(const fn of this.handlers[type])fn(e);}onTouchStart(event){let didTouch1=false;if(event.type!=='mousedown'){if(!this.touch1){this.touch1=event.changedTouches[0];didTouch1=true;}if(!didTouch1)return;}if(didTouch1||event.type==='mousedown'){this.thresholdX=this.opts.threshold('x',this);this.thresholdY=this.opts.threshold('y',this);this.disregardVelocityThresholdX=this.opts.disregardVelocityThreshold('x',this);this.disregardVelocityThresholdY=this.opts.disregardVelocityThreshold('y',this);this.touchStartX=event.type==='mousedown'?event.screenX:this.touch1?.screenX||0;this.touchStartY=event.type==='mousedown'?event.screenY:this.touch1?.screenY||0;this.touchMoveX=null;this.touchMoveY=null;this.touchEndX=null;this.touchEndY=null;this.swipingDirection=null;this.longPressTimer=setTimeout(()=>this.fire('longpress',event),this.opts.longPressTime);this.fire('panstart',event);}}onTouchMove(event){if(event.type==='mousemove'&&(!this.touchStartX||this.touchEndX!==null))return;let touch1;if(event.type!=='mousemove'){touch1=[...event.changedTouches].find(t=>t.identifier===this.touch1?.identifier);this.touchMove1=touch1||this.touchMove1;}if(event.type==='mousemove'||touch1){const mx=(event.type==='mousemove'?event.screenX:touch1?.screenX??0)-(this.touchStartX??0);this.velocityX=mx-(this.touchMoveX??0);this.touchMoveX=mx;const my=(event.type==='mousemove'?event.screenY:touch1?.screenY??0)-(this.touchStartY??0);this.velocityY=my-(this.touchMoveY??0);this.touchMoveY=my;const ax=Math.abs(mx),ay=Math.abs(my);this.swipingHorizontal=ax>this.thresholdX;this.swipingVertical=ay>this.thresholdY;this.swipingDirection=ax>ay?this.swipingHorizontal?'horizontal':'pre-horizontal':this.swipingVertical?'vertical':'pre-vertical';if(Math.max(ax,ay)>this.opts.pressThreshold)clearTimeout(this.longPressTimer);this.fire('panmove',event);}}onTouchEnd(event){let touch1;if(event.type!=='mouseup'){touch1=[...event.changedTouches].find(t=>t.identifier===this.touch1?.identifier);if(![...event.touches].find(t=>t.identifier===this.touch1?.identifier)){this.touch1=null;this.touchMove1=null;}}if(event.type==='mouseup'&&(!this.touchStartX||this.touchEndX!==null))return;if(event.type==='mouseup'||touch1){this.touchEndX=event.type==='mouseup'?event.screenX:touch1?.screenX??0;this.touchEndY=event.type==='mouseup'?event.screenY:touch1?.screenY??0;this.fire('panend',event);clearTimeout(this.longPressTimer);const x=this.touchEndX-(this.touchStartX??0),ax=Math.abs(x);const y=this.touchEndY-(this.touchStartY??0),ay=Math.abs(y);if(ax>this.thresholdX||ay>this.thresholdY){if(ax>=ay){if(x<0&&((this.velocityX??0)<-this.opts.velocityThreshold||x<-this.disregardVelocityThresholdX))this.fire('swipeleft',event);else if(x>0&&((this.velocityX??0)>this.opts.velocityThreshold||x>this.disregardVelocityThresholdX))this.fire('swiperight',event);}else{if(y<0&&((this.velocityY??0)<-this.opts.velocityThreshold||y<-this.disregardVelocityThresholdY))this.fire('swipeup',event);else if(y>0&&((this.velocityY??0)>this.opts.velocityThreshold||y>this.disregardVelocityThresholdY))this.fire('swipedown',event);}}else if(ax<this.opts.pressThreshold&&ay<this.opts.pressThreshold){if(this.doubleTapWaiting){this.doubleTapWaiting=false;clearTimeout(this.doubleTapTimer);this.fire('doubletap',event);}else{this.doubleTapWaiting=true;this.doubleTapTimer=setTimeout(()=>this.doubleTapWaiting=false,this.opts.doubleTapTime);this.fire('tap',event);}}}}}
+TinyGesture.defaults={threshold:(type)=>Math.max(25,Math.floor(0.15*(type==='x'?window.innerWidth:window.innerHeight))),velocityThreshold:10,disregardVelocityThreshold:(type,self)=>Math.floor(0.5*(type==='x'?self.element.clientWidth:self.element.clientHeight)),pressThreshold:8,longPressTime:500,doubleTapTime:300,mouseSupport:true};
+
+// ═══ CONFIG ═══
+const APP_NAME='vector-v1';
+const FB_CONFIG={apiKey:"AIzaSyAgIA0PLvUOJsRN8tHRzC03evTTkt3KHHc",authDomain:"skills-tracker-3f21b.firebaseapp.com",projectId:"skills-tracker-3f21b",storageBucket:"skills-tracker-3f21b.firebasestorage.app",messagingSenderId:"108202530564",appId:"1:108202530564:web:31ecf70071f49a89abe251"};
+
+const DEFAULT_IDEA_PROMPT='Человек записал бизнес-идею. Оцени потенциал по 3 критериям: 1) востребованность, 2) реализуемость с текущими ресурсами, 3) уникальность. Дай одну конкретную рекомендацию — первый шаг. 2–3 предложения, без воды. Тон прямой, конструктивный.';
+const DEFAULT_SKILL_PROMPT='Человек записал прогресс в обучении. Замечай паттерн: как он учится, что выбирает, где застревает. Подскажи один конкретный следующий шаг или ресурс. 2–3 предложения, конструктивно.';
+const DEFAULT_INSIGHT_PROMPT='Человек записал инсайт или наблюдение. Найди связь с его траекторией развития. Углуби мысль — покажи неочевидный аспект или следствие. 2 предложения, без советов.';
+const DEFAULT_ACTION_PROMPT='Человек записал конкретное действие для своего роста. Отрази что произошло — сдвиг, выбор, преодоление. Замечай разницу между «планировал» и «сделал». 2 предложения, тёплый тон.';
+
+// ═══ STATE ═══
+let fbDb=null,fbAuth=null,fbOk=false,fbBusy=false;
+let userName='',userId='',lsKey='';
+let deckIdx=0,cardGesture=null;
+let addType='idea',curTab='all';
+let selSkillId=null,selProgress=0;
+
+let appData={
+  entries:[],
+  skills:[],
+  weekInsight:{text:'',weekHash:'',generatedAt:0},
+  settings:{
+    claudeKey:'',
+    baseContext:'',
+    ideaPrompt:'',
+    skillPrompt:'',
+    insightPrompt:'',
+    actionPrompt:''
+  }
+};
+
+// ═══ UTILS ═══
+const $=id=>document.getElementById(id);
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
+function simpleHash(s){let h=0;for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h=((h<<5)-h)+c;h=h&h;}return Math.abs(h).toString(36);}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function todayISO(){return new Date().toISOString().split('T')[0]}
+const MO=['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+const WD=['воскресенье','понедельник','вторник','среда','четверг','пятница','суббота'];
+function fmtDate(iso){const d=new Date(iso+'T12:00:00'),t=todayISO(),y=new Date(Date.now()-86400000).toISOString().split('T')[0];if(iso===t)return'сегодня';if(iso===y)return'вчера';return d.getDate()+' '+MO[d.getMonth()];}
+function fmtTime(ts){const d=new Date(ts);return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');}
+function getWeekHash(){const d=new Date(),s=new Date(d.getFullYear(),0,1),w=Math.ceil(((d-s)/86400000+s.getDay()+1)/7);return`${d.getFullYear()}-W${String(w).padStart(2,'0')}`;}
+function plural(n,a,b,c){const m=n%10,h=n%100;if(m===1&&h!==11)return a;if(m>=2&&m<=4&&(h<10||h>=20))return b;return c;}
+function typeLabel(t){return{idea:'идея',skill:'навык',insight:'инсайт',action:'действие'}[t]||t}
+function typeColor(t){return{idea:'var(--idea)',skill:'var(--skill)',insight:'var(--insight)',action:'var(--action)'}[t]||'var(--t2)'}
+function typeBg(t){return{idea:'rgba(212,119,11,.08)',skill:'rgba(42,157,143,.08)',insight:'rgba(124,93,199,.08)',action:'rgba(199,93,138,.08)'}[t]||'rgba(40,35,20,.05)'}
+function typeIcon(t){return{idea:'💡',skill:'📚',insight:'⚡',action:'🎯'}[t]||'📝'}
+
+// IDEA STAGES
+const STAGES=['seed','validate','plan','build','launch'];
+const STAGE_LABELS={seed:'зерно',validate:'проверка',plan:'план',build:'делаю',launch:'запуск'};
+function ideaStageColor(s){return{seed:'rgba(212,119,11,.1)',validate:'rgba(26,122,230,.1)',plan:'rgba(124,93,199,.1)',build:'rgba(42,157,143,.1)',launch:'rgba(46,189,82,.1)'}[s]||'rgba(40,35,20,.05)'}
+function ideaStageFg(s){return{seed:'var(--idea)',validate:'var(--acc)',plan:'var(--insight)',build:'var(--skill)',launch:'var(--ok)'}[s]||'var(--t2)'}
+
+// ═══ TOAST ═══
+let _tt=null;
+function toast(msg,dur=2600){const el=$('toast');el.textContent=msg;el.classList.add('on');clearTimeout(_tt);_tt=setTimeout(()=>el.classList.remove('on'),dur);}
+function setStatus(cls,txt){const d=$('sdot'),t=$('stxt');if(d)d.className='sdot '+cls;if(t)t.textContent=txt;}
+
+// ═══ STORAGE ═══
+function saveLs(){try{localStorage.setItem(lsKey,JSON.stringify(appData));}catch(e){}}
+function loadLs(){try{const r=localStorage.getItem(lsKey);if(r){const d=JSON.parse(r);appData={...appData,...d};}}catch(e){}}
+let _syncT=null;
+function sync(){saveLs();clearTimeout(_syncT);_syncT=setTimeout(saveFb,1800);}
+
+// ═══ FIREBASE ═══
+function initFb(){
+  try{
+    firebase.initializeApp(FB_CONFIG);fbDb=firebase.firestore();fbAuth=firebase.auth();
+    fbAuth.signInAnonymously().then(()=>{fbOk=true;setStatus('on','Онлайн');loadFb();}).catch(()=>{fbOk=false;setStatus('','Офлайн');});
+  }catch(e){fbOk=false;setStatus('','Офлайн');}
+}
+function fbRef(){return fbDb.collection('apps').doc(APP_NAME).collection('users').doc(userId);}
+async function saveFb(){
+  if(!fbOk||fbBusy)return;
+  if(!appData.entries?.length&&!appData.settings?.claudeKey)return;
+  fbBusy=true;setStatus('sy','Сохранение...');
+  try{await fbRef().set({data:JSON.stringify(appData),ts:firebase.firestore.FieldValue.serverTimestamp(),by:userName},{merge:true});setStatus('on','Сохранено');}
+  catch(e){setStatus('','Ошибка');}finally{fbBusy=false;}
+}
+async function loadFb(){
+  if(window._fbL||!fbOk)return;window._fbL=true;fbBusy=true;setStatus('sy','Загрузка...');
+  try{
+    const doc=await fbRef().get();
+    if(doc.exists&&doc.data().data){
+      const remote=JSON.parse(doc.data().data);
+      appData={...appData,...remote};
+      saveLs();render();setStatus('on','Загружено');
+    }else setStatus('on','Готово');
+  }catch(e){setStatus('','Офлайн');}finally{fbBusy=false;window._fbL=false;}
+}
+
+// ═══ LOGIN ═══
+function doLogin(){
+  const n=$('inName').value.trim();if(!n){toast('Введи логин');return;}
+  userName=n;userId=simpleHash(n);lsKey=APP_NAME+'_'+userId;
+  localStorage.setItem(APP_NAME+'_last',n);
+  loadLs();
+  $('sLogin').classList.add('off');$('sMain').classList.remove('off');
+  updateHeader();render();initFb();
+  toast('Привет, '+n.split(/[\s_]/)[0]+'!');
+}
+document.addEventListener('DOMContentLoaded',()=>{
+  const last=localStorage.getItem(APP_NAME+'_last');
+  if(last)$('inName').value=last;
+  $('inName').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+});
+
+// ═══ HEADER ═══
+function updateHeader(){
+  const d=new Date();
+  $('hDate').textContent=WD[d.getDay()]+', '+d.getDate()+' '+MO[d.getMonth()];
+  const entries=appData.entries||[];
+  $('statTotal').textContent=entries.length;
+  $('statStreak').textContent=calcStreak();
+  $('statIdeas').textContent=entries.filter(e=>e.type==='idea').length;
+}
+function calcStreak(){
+  const e=appData.entries||[];if(!e.length)return 0;
+  const sorted=[...e].sort((a,b)=>b.date.localeCompare(a.date));
+  let s=0,cur=new Date();cur.setHours(0,0,0,0);
+  for(const x of sorted){const d=new Date(x.date+'T00:00:00'),diff=Math.round((cur-d)/86400000);if(diff===0||diff===1){s++;cur=d;}else break;}
+  return s;
+}
+
+// ═══ TABS ═══
+function switchTab(t){
+  curTab=t;deckIdx=0;
+  ['All','Ideas','Skills','Insights'].forEach(x=>{
+    const el=$('tab'+x);if(el)el.classList.toggle('on',x.toLowerCase()===t);
+  });
+  render();
+}
+
+// ═══ RENDER ═══
+function render(){
+  updateHeader();updateBadges();
+  const mc=$('mainContent');
+  let entries=(appData.entries||[]).slice().sort((a,b)=>b.createdAt-a.createdAt);
+  if(curTab==='ideas')entries=entries.filter(e=>e.type==='idea');
+  else if(curTab==='skills')entries=entries.filter(e=>e.type==='skill');
+  else if(curTab==='insights')entries=entries.filter(e=>e.type==='insight'||e.type==='action');
+
+  let html='';
+
+  // BLOCKS only on "all" tab
+  if(curTab==='all'){
+    // Skills progress
+    const skills=appData.skills||[];
+    if(skills.length){
+      html+=`<div class="prog-block">
+        <div class="prog-lbl">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+          навыки · прогресс
+        </div>
+        <div class="prog-bars">${skills.slice(0,5).map(sk=>{
+          const lvl=getSkillLevel(sk.id);
+          return`<div class="prog-row">
+            <div class="prog-name">${esc(sk.name)}</div>
+            <div class="prog-bar"><div class="prog-fill" style="width:${lvl}%"></div></div>
+            <div class="prog-pct">${lvl}%</div>
+          </div>`;
+        }).join('')}</div>
+      </div>`;
+    }
+
+    // Ideas pipeline
+    const ideas=entries.filter(e=>e.type==='idea');
+    if(ideas.length){
+      const stages={};STAGES.forEach(s=>stages[s]=0);
+      ideas.forEach(e=>{const st=e.stage||'seed';if(stages[st]!==undefined)stages[st]++;});
+      html+=`<div class="pipe-block" onclick="switchTab('ideas')">
+        <div class="pipe-lbl">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          воронка идей
+        </div>
+        <div class="pipe-stages">${STAGES.map(s=>`<div class="pipe-dot${stages[s]>0?' active':''}" title="${STAGE_LABELS[s]}"></div>`).join('<span style="font-size:8px;color:var(--t3)">→</span>')}</div>
+        <div class="pipe-text"><b>${ideas.length}</b> ${plural(ideas.length,'идея','идеи','идей')} · нажми чтобы открыть</div>
+      </div>`;
+    }
+
+    // Week insight
+    const wh=getWeekHash();
+    html+=`<div class="ai-week" onclick="openWeekInsight()">
+      <div class="ai-week-lbl"><div class="ai-wdot"></div>вектор недели</div>
+      ${appData.weekInsight?.text&&appData.weekInsight?.weekHash===wh
+        ?`<div class="ai-week-text">"${esc(appData.weekInsight.text)}"</div>`
+        :`<div style="font-size:12px;color:var(--t3);font-style:italic">Накопится 3+ записей — появится анализ</div>`}
+    </div>`;
+  }
+
+  // Entries stack
+  if(!entries.length){
+    html+=`<div class="empty">
+      <div class="empty-ico"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
+      <div class="empty-t">Нет записей</div>
+      <div class="empty-s">Нажми + чтобы начать</div>
+    </div>`;
+  }else{
+    html+=`<div class="sec">${curTab==='all'?'записи':curTab==='ideas'?'идеи':curTab==='skills'?'навыки':'инсайты'}</div><div class="stack" id="eStack">`;
+    const show=entries.slice(deckIdx,deckIdx+3);
+    show.forEach((e,i)=>{
+      const cls=i===0?'top':i===1?'mid':'bot';
+      const sk=e.skillId?(appData.skills||[]).find(s=>s.id===e.skillId):null;
+      html+=`<div class="ecard ${cls}" id="ec${e.id}" onclick="openEntry('${e.id}')">
+        <div class="ecard-header">
+          <span class="ecard-type" style="background:${typeBg(e.type)};color:${typeColor(e.type)}">${typeIcon(e.type)} ${typeLabel(e.type)}</span>
+          <span class="ecard-day">${fmtDate(e.date)}${e.createdAt?' · '+fmtTime(e.createdAt):''}</span>
+        </div>
+        ${e.title?`<div class="ecard-title">${esc(e.title)}</div>`:''}
+        ${e.type==='idea'&&e.stage?`<div class="idea-stage" style="background:${ideaStageColor(e.stage)};color:${ideaStageFg(e.stage)}">${STAGE_LABELS[e.stage]||e.stage}</div>`:''}
+        ${sk?`<div class="skill-tags"><span class="skill-tag">${esc(sk.name)}${e.progress?' · '+e.progress+'%':''}</span></div>`:''}
+        <div class="ecard-text">${esc(e.text)}</div>
+        ${e.response
+          ?`<div class="ai-preview has" style="color:${typeColor(e.type)};border-left-color:${typeColor(e.type)}">"${esc(e.response)}"</div>`
+          :`<div class="ai-preview none">нажми чтобы спросить Claude</div>`}
+      </div>`;
+    });
+    html+=`</div><div class="swipe-hint"><span style="font-size:13px">‹</span><span>листай между записями</span><span style="font-size:13px">›</span></div>`;
+  }
+  mc.innerHTML=html;
+  if(entries.length)initStackGesture(entries);
+}
+
+function updateBadges(){
+  const e=appData.entries||[];
+  $('bIdeas').textContent=e.filter(x=>x.type==='idea').length;
+  $('bSkills').textContent=e.filter(x=>x.type==='skill').length;
+}
+
+function getSkillLevel(skillId){
+  const entries=(appData.entries||[]).filter(e=>e.type==='skill'&&e.skillId===skillId);
+  if(!entries.length)return 0;
+  const last=entries.sort((a,b)=>b.createdAt-a.createdAt)[0];
+  return last.progress||0;
+}
+
+// ═══ STACK GESTURE ═══
+function initStackGesture(entries){
+  const stk=$('eStack');if(!stk)return;
+  const top=stk.querySelector('.ecard.top');if(!top)return;
+  top.addEventListener('touchstart',e=>e.preventDefault(),{passive:false});
+  top.addEventListener('touchmove',e=>e.preventDefault(),{passive:false});
+  if(cardGesture)cardGesture.destroy();
+  cardGesture=new TinyGesture(top,{mouseSupport:true,pressThreshold:8});
+  let dragging=false;
+  cardGesture.on('panstart',()=>dragging=false);
+  cardGesture.on('panmove',()=>{
+    const dx=cardGesture.touchMoveX;
+    if(Math.abs(dx)>6)dragging=true;
+    top.style.transition='none';
+    top.style.transform=`translateX(${dx*.85}px) rotate(${dx*.04}deg)`;
+  });
+  cardGesture.on('panend',()=>{
+    const dx=cardGesture.touchMoveX,vx=cardGesture.velocityX;
+    const commit=Math.abs(dx)>70||Math.abs(vx)>1.5;
+    if(commit){
+      const dir=dx<0?'left':'right';
+      top.style.transition='transform .3s cubic-bezier(.22,1,.36,1),opacity .25s';
+      top.style.transform=dir==='left'?'translateX(-130%) rotate(-8deg)':'translateX(130%) rotate(8deg)';
+      top.style.opacity='0';
+      if(dir==='left')deckIdx=Math.min(deckIdx+1,entries.length-1);
+      else deckIdx=Math.max(deckIdx-1,0);
+      setTimeout(render,280);
+    }else{
+      top.style.transition='transform .4s cubic-bezier(.175,.885,.32,1.275)';
+      top.style.transform='';
+    }
+  });
+  cardGesture.on('tap',()=>{if(!dragging){const e=entries[deckIdx];if(e)openEntry(e.id);}});
+}
+
+// ═══ SHEETS ═══
+const ALL_SHEETS=['shEntry','shAdd','shWeek','shSkills','shSettings'];
+function openSheet(id){$('ov').classList.add('on');ALL_SHEETS.forEach(s=>$(s).classList.remove('on'));$(id).classList.add('on');}
+function closeSheet(){$('ov').classList.remove('on');ALL_SHEETS.forEach(s=>$(s).classList.remove('on'));}
+
+// ═══ ENTRY DETAIL ═══
+function openEntry(id){
+  const e=(appData.entries||[]).find(x=>x.id===id);if(!e)return;
+  const sk=e.skillId?(appData.skills||[]).find(s=>s.id===e.skillId):null;
+  const col=typeColor(e.type);
+
+  let content='';
+  if(e.type==='idea'&&e.idea){
+    const fields=[{k:'Суть',v:e.idea.what},{k:'Для кого',v:e.idea.who},{k:'Проблема',v:e.idea.problem},{k:'Ресурсы',v:e.idea.resources}];
+    content=`<div class="sh-sec"><div class="sh-slbl" style="color:var(--idea)">бизнес-идея</div>
+      ${fields.map(f=>`<div style="margin-bottom:6px"><span style="font-size:10px;font-weight:600;letter-spacing:.3px;text-transform:uppercase;color:var(--idea)">${f.k}</span><div style="font-size:13px;color:${f.v?'var(--t1)':'var(--t3)'};line-height:1.5;margin-top:2px">${f.v?esc(f.v):'<i>не заполнено</i>'}</div></div>`).join('')}
+      ${e.stage?`<div style="margin-top:6px"><span style="font-size:10px;font-weight:600;letter-spacing:.3px;text-transform:uppercase;color:var(--t3)">Стадия</span><div style="margin-top:4px;display:flex;gap:4px">${STAGES.map(s=>`<span onclick="setStage('${id}','${s}')" style="cursor:pointer;padding:4px 8px;border-radius:100px;font-size:10px;font-weight:500;background:${e.stage===s?ideaStageColor(s):'transparent'};color:${e.stage===s?ideaStageFg(s):'var(--t3)'};border:0.5px solid ${e.stage===s?ideaStageFg(s)+'30':'var(--brd2)'}">${STAGE_LABELS[s]}</span>`).join('')}</div></div>`:''}
+    </div>`;
+  }else{
+    content=`<div class="sh-sec"><div class="sh-slbl">запись</div>`;
+    if(sk)content+=`<div style="margin-bottom:6px"><span class="skill-tag">${esc(sk.name)}${e.progress?' · '+e.progress+'%':''}</span></div>`;
+    content+=`<div class="sh-stext">${esc(e.text)}</div></div>`;
+  }
+
+  let respBlock='';
+  if(e.response){
+    respBlock=`<div class="sh-sec" style="border-color:${col}30;background:${col.replace('var(','rgba(').replace(')','').split('--')[0]}">
+      <div class="sh-slbl" style="color:${col}">ответ Claude</div>
+      <div class="ai-answer">"${esc(e.response)}"</div>
+    </div>`;
+  }else{
+    respBlock=`<div class="sh-sec"><div class="sh-slbl" style="color:${col}">ответ Claude</div>
+      <div class="sh-stext" style="color:var(--t3);font-style:italic">Ещё не запрошен.</div></div>`;
+  }
+
+  $('shEntryBody').innerHTML=`
+    <div class="sh-title">${e.title?esc(e.title):fmtDate(e.date)}</div>
+    <div class="sh-sub">${typeIcon(e.type)} ${typeLabel(e.type)} · ${fmtDate(e.date)}${e.createdAt?' · '+fmtTime(e.createdAt):''}</div>
+    ${content}
+    ${respBlock}
+    <div class="sh-btns">
+      <button class="btn-g" onclick="closeSheet()">Закрыть</button>
+      <button class="btn-p" id="askBtn" style="background:${col}" onclick="askClaude('${id}',this)">${e.response?'Переспросить':'Спросить Claude'}</button>
+    </div>
+    <div style="height:6px"></div>
+    <div class="sh-btns"><button class="btn-g btn-del" onclick="delEntry('${id}')">Удалить запись</button></div>`;
+  openSheet('shEntry');
+}
+
+function setStage(id,stage){
+  const e=(appData.entries||[]).find(x=>x.id===id);
+  if(e){e.stage=stage;sync();openEntry(id);toast('Стадия: '+STAGE_LABELS[stage]);}
+}
+
+function delEntry(id){
+  if(!confirm('Удалить?'))return;
+  appData.entries=(appData.entries||[]).filter(x=>x.id!==id);
+  deckIdx=Math.max(0,deckIdx-1);sync();closeSheet();render();toast('Удалено');
+}
+
+// ═══ ADD ENTRY ═══
+function openAdd(){
+  $('addText').value='';
+  ['ideaWhat','ideaWho','ideaProblem','ideaRes'].forEach(id=>{if($(id))$(id).value='';});
+  selSkillId=null;selProgress=0;
+  selType('idea',document.getElementById('tb-idea'));
+  openSheet('shAdd');
+  setTimeout(()=>{if(addType==='idea')$('ideaWhat').focus();else $('addText').focus();},380);
+}
+function selType(type,el){
+  addType=type;
+  document.querySelectorAll('.type-btn').forEach(b=>{b.classList.remove('sel');b.style.background='transparent';b.style.borderColor='';b.style.color='';});
+  el.classList.add('sel');
+  const colors={idea:'var(--idea)',skill:'var(--skill)',insight:'var(--insight)',action:'var(--action)'};
+  el.style.background=colors[type]||'var(--t2)';el.style.borderColor=colors[type]||'';el.style.color='#fff';
+
+  // Show/hide guides
+  ['idea','skill','insight','action'].forEach(t=>{
+    const g=$(t+'Guide');if(g)g.classList.toggle('on',t===type);
+  });
+
+  // Show/hide fields
+  $('ideaFields').classList.toggle('on',type==='idea');
+  $('skillFields').classList.toggle('on',type==='skill');
+  const ta=$('addText');
+  if(type==='idea'){ta.style.display='none';}
+  else{
+    ta.style.display='block';
+    if(type==='skill')ta.placeholder='Что изучал, что понял, какой результат?';
+    else if(type==='insight')ta.placeholder='Какой инсайт? Что заметил?';
+    else if(type==='action')ta.placeholder='Что конкретно сделал?';
+  }
+
+  // Render skill picker
+  if(type==='skill')renderSkillPicker();
+}
+
+function renderSkillPicker(){
+  const skills=appData.skills||[];
+  $('skillPick').innerHTML=skills.map(sk=>
+    `<div class="skill-opt${selSkillId===sk.id?' sel':''}" onclick="pickSkill('${sk.id}',this)">${esc(sk.name)}</div>`
+  ).join('')+(skills.length?'':'<span style="font-size:12px;color:var(--t3)">Добавь навыки через 📚</span>');
+
+  $('progPick').innerHTML=[10,25,40,55,70,85,100].map(p=>
+    `<div class="prog-opt${selProgress===p?' sel':''}" onclick="pickProgress(${p},this)">${p}</div>`
+  ).join('')+'<span style="font-size:10px;color:var(--t3);margin-left:4px">%</span>';
+}
+
+function pickSkill(id,el){
+  selSkillId=id;
+  document.querySelectorAll('.skill-opt').forEach(o=>o.classList.remove('sel'));
+  el.classList.add('sel');
+}
+function pickProgress(p,el){
+  selProgress=p;
+  document.querySelectorAll('.prog-opt').forEach(o=>o.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+function saveEntry(){
+  if(!appData.entries)appData.entries=[];
+  const now=Date.now();
+
+  if(addType==='idea'){
+    const what=$('ideaWhat').value.trim();
+    if(!what){toast('Опиши идею');return;}
+    const who=$('ideaWho').value.trim();
+    const problem=$('ideaProblem').value.trim();
+    const resources=$('ideaRes').value.trim();
+    const text=`${what}${who?' · Для: '+who:''}${problem?' · Проблема: '+problem:''}`;
+    appData.entries.push({id:uid(),date:todayISO(),type:'idea',title:what.slice(0,60),text:text,
+      idea:{what,who,problem,resources},stage:'seed',response:null,createdAt:now});
+  }else if(addType==='skill'){
+    const txt=$('addText').value.trim();
+    if(!txt){toast('Напиши что изучал');return;}
+    const sk=selSkillId?(appData.skills||[]).find(s=>s.id===selSkillId):null;
+    appData.entries.push({id:uid(),date:todayISO(),type:'skill',title:sk?sk.name:'Обучение',text:txt,
+      skillId:selSkillId,progress:selProgress,response:null,createdAt:now});
+  }else{
+    const txt=$('addText').value.trim();
+    if(!txt){toast('Напиши что-нибудь');return;}
+    appData.entries.push({id:uid(),date:todayISO(),type:addType,title:txt.slice(0,50),text:txt,
+      response:null,createdAt:now});
+  }
+  deckIdx=0;sync();closeSheet();render();toast('Сохранено ✓');
+}
+
+// ═══ SKILLS MANAGE ═══
+function openSkillsManage(){
+  renderSkillsList();
+  openSheet('shSkills');
+}
+function renderSkillsList(){
+  const skills=appData.skills||[];
+  $('skillsList').innerHTML=skills.map((sk,i)=>{
+    const lvl=getSkillLevel(sk.id);
+    return`<div class="skill-item">
+      <div class="skill-item-name">${esc(sk.name)}</div>
+      <div class="skill-item-lvl">${lvl}%</div>
+      <button class="skill-item-del" onclick="removeSkill(${i})"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>`;
+  }).join('')||'<div style="font-size:12px;color:var(--t3);padding:8px 0;font-style:italic">Пока нет навыков</div>';
+}
+function addSkill(){
+  if(!appData.skills)appData.skills=[];
+  const inp=$('newSkillInp');
+  const name=inp.value.trim();
+  if(!name){toast('Введи название');return;}
+  appData.skills.push({id:uid(),name});
+  inp.value='';
+  sync();renderSkillsList();render();
+}
+function removeSkill(idx){
+  if(!confirm('Удалить навык?'))return;
+  appData.skills.splice(idx,1);
+  sync();renderSkillsList();render();
+}
+
+// ═══ WEEK INSIGHT ═══
+async function openWeekInsight(){
+  const wh=getWeekHash();
+  const weekAgo=new Date(Date.now()-7*86400000).toISOString().split('T')[0];
+  const recent=(appData.entries||[]).filter(e=>e.date>=weekAgo);
+  $('shWeekBody').innerHTML=`
+    <div class="sh-title">Вектор недели</div>
+    <div class="sh-sub">${recent.length} ${plural(recent.length,'запись','записи','записей')} за 7 дней</div>
+    ${appData.weekInsight?.text&&appData.weekInsight?.weekHash===wh
+      ?`<div class="sh-sec" style="border-color:rgba(124,93,199,.15)">
+          <div class="sh-slbl" style="color:var(--insight)">анализ</div>
+          <div class="ai-answer" style="color:var(--t1)">"${esc(appData.weekInsight.text)}"</div>
+        </div>`
+      :`<div class="sh-sec"><div class="sh-slbl">анализ</div>
+          <div class="sh-stext" style="color:var(--t3);font-style:italic">${recent.length<3?'Нужно минимум 3 записи.':'Нажми кнопку ниже.'}</div>
+        </div>`}
+    <div class="sh-btns">
+      <button class="btn-g" onclick="closeSheet()">Закрыть</button>
+      ${recent.length>=3?`<button class="btn-p" style="background:var(--insight)" id="wBtn" onclick="genWeek(this)">${appData.weekInsight?.weekHash===wh?'Обновить':'Сгенерировать'}</button>`:''}
+    </div>`;
+  openSheet('shWeek');
+}
+async function genWeek(btn){
+  const key=appData.settings?.claudeKey;if(!key){toast('Нужен API ключ ⚙');return;}
+  btn.disabled=true;btn.innerHTML='<span class="spin"></span>';
+  const weekAgo=new Date(Date.now()-7*86400000).toISOString().split('T')[0];
+  const recent=(appData.entries||[]).filter(e=>e.date>=weekAgo).sort((a,b)=>a.date.localeCompare(b.date));
+  const lines=recent.map(e=>`${e.date} [${typeLabel(e.type)}] ${e.title||''}: ${e.text}`).join('\n');
+  const ctx=appData.settings?.baseContext||'';
+  const sys=ctx?ctx+'\n\n':'';
+  try{
+    const r=await callClaude(sys+'Записи развития за неделю:\n'+lines+'\n\nПроанализируй вектор развития: куда движется человек, какие паттерны в обучении и идеях, где точка роста. Обрати внимание на связи между идеями, навыками и инсайтами. 3–4 предложения. Без перечисления — найди направление. Только текст.',500);
+    appData.weekInsight={text:r.trim(),weekHash:getWeekHash(),generatedAt:Date.now()};
+    sync();closeSheet();showRevealGeneric('вектор недели','var(--insight)',appData.weekInsight.text,recent.length+' '+plural(recent.length,'запись','записи','записей')+' за 7 дней');
+  }catch(e){toast('Ошибка: '+e.message);btn.disabled=false;btn.textContent='Попробовать снова';}
+}
+
+// ═══ ASK CLAUDE ═══
+async function askClaude(id,btn){
+  const key=appData.settings?.claudeKey;if(!key){toast('Нужен API ключ ⚙');return;}
+  const e=(appData.entries||[]).find(x=>x.id===id);if(!e)return;
+  btn.disabled=true;btn.innerHTML='<span class="spin"></span>';
+  const ctx=appData.settings?.baseContext||'';
+  const prompts={
+    idea:appData.settings?.ideaPrompt||DEFAULT_IDEA_PROMPT,
+    skill:appData.settings?.skillPrompt||DEFAULT_SKILL_PROMPT,
+    insight:appData.settings?.insightPrompt||DEFAULT_INSIGHT_PROMPT,
+    action:appData.settings?.actionPrompt||DEFAULT_ACTION_PROMPT
+  };
+  const sys=[ctx,prompts[e.type]||''].filter(Boolean).join('\n\n');
+  const userMsg=`[${typeLabel(e.type)}] ${e.date}:\n${e.text}`;
+  try{
+    const r=await callClaudeSystem(sys,userMsg,400);
+    e.response=r.trim();
+    sync();closeSheet();
+    showRevealEntry(e);
+  }catch(err){toast('Ошибка: '+err.message);btn.disabled=false;btn.textContent='Попробовать снова';}
+}
+
+// ═══ REVEAL ═══
+function showRevealEntry(entry){
+  $('revealCard').innerHTML=`
+    <div class="reveal-role">
+      <div class="reveal-role-dot" style="background:${typeColor(entry.type)}"></div>
+      <div class="reveal-role-name" style="color:${typeColor(entry.type)}">${typeIcon(entry.type)} ${typeLabel(entry.type)}</div>
+    </div>
+    <div class="reveal-text">"${esc(entry.response)}"</div>
+    <div class="reveal-src">
+      <div style="margin-top:4px"><b>${entry.title||typeLabel(entry.type)}</b> · ${fmtDate(entry.date)}</div>
+    </div>
+    <div class="reveal-hint">нажми чтобы закрыть</div>`;
+  const w=$('revealWrap');w.classList.remove('out');w.classList.add('on');
+}
+function showRevealGeneric(label,color,text,sub){
+  $('revealCard').innerHTML=`
+    <div class="reveal-role">
+      <div class="reveal-role-dot" style="background:${color}"></div>
+      <div class="reveal-role-name" style="color:${color}">${label}</div>
+    </div>
+    <div class="reveal-text">"${esc(text)}"</div>
+    <div class="reveal-src"><div style="color:var(--t3)">${sub}</div></div>
+    <div class="reveal-hint">нажми чтобы закрыть</div>`;
+  const w=$('revealWrap');w.classList.remove('out');w.classList.add('on');
+}
+function dismissReveal(){
+  const w=$('revealWrap');w.classList.add('out');
+  setTimeout(()=>{w.classList.remove('on','out');render();},350);
+}
+
+// ═══ SETTINGS ═══
+function openSettings(){
+  $('sKey').value=appData.settings?.claudeKey||'';
+  $('sCtx').value=appData.settings?.baseContext||'';
+  $('sIdea').value=appData.settings?.ideaPrompt||DEFAULT_IDEA_PROMPT;
+  $('sSkill').value=appData.settings?.skillPrompt||DEFAULT_SKILL_PROMPT;
+  $('sInsight').value=appData.settings?.insightPrompt||DEFAULT_INSIGHT_PROMPT;
+  $('sAction').value=appData.settings?.actionPrompt||DEFAULT_ACTION_PROMPT;
+  openSheet('shSettings');
+}
+function saveSettings(){
+  if(!appData.settings)appData.settings={};
+  appData.settings.claudeKey=$('sKey').value.trim();
+  appData.settings.baseContext=$('sCtx').value.trim();
+  appData.settings.ideaPrompt=$('sIdea').value.trim();
+  appData.settings.skillPrompt=$('sSkill').value.trim();
+  appData.settings.insightPrompt=$('sInsight').value.trim();
+  appData.settings.actionPrompt=$('sAction').value.trim();
+  sync();closeSheet();toast('Настройки сохранены');
+}
+
+// ═══ CLAUDE API ═══
+async function callClaude(userMsg,maxTokens=500){return callClaudeSystem('',userMsg,maxTokens);}
+async function callClaudeSystem(sys,userMsg,maxTokens=500){
+  const key=appData.settings?.claudeKey;if(!key)throw new Error('API ключ не задан');
+  const body={model:'claude-sonnet-4-6',max_tokens:maxTokens,messages:[{role:'user',content:userMsg}]};
+  if(sys)body.system=sys;
+  const r=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    body:JSON.stringify(body)
+  });
+  const raw=await r.text();
+  if(!r.ok){let m='HTTP '+r.status;try{m=JSON.parse(raw)?.error?.message||m;}catch(_){}throw new Error(m);}
+  return JSON.parse(raw).content[0].text;
+}
+</script>
+</body>
+</html>
