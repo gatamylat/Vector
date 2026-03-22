@@ -20,6 +20,7 @@ html,body{height:100%;overflow:hidden}
 body{-webkit-font-smoothing:antialiased;-webkit-user-select:none;user-select:auto}
 input,textarea{-webkit-user-select:auto;user-select:auto}
 ::-webkit-scrollbar{display:none}
+
 :root{
   --bg:#FAF9F5;--surf:#fff;--t1:#1C1C1E;--t2:#8A8985;--t3:#C4C3BE;
   --acc:#1A7AE6;--ok:#2EBD52;--del:#E8453A;--warn:#E89A0A;
@@ -30,8 +31,11 @@ input,textarea{-webkit-user-select:auto;user-select:auto}
   --st:env(safe-area-inset-top,0px);--sb:env(safe-area-inset-bottom,0px);
 }
 @media(prefers-color-scheme:dark){
-  :root{--bg:#1A1A1D;--surf:#2C2C2E;--t1:#F0EFEA;--t2:#9A9A9A;--t3:#5A5A5A;--brd:rgba(255,255,255,.08);--brd2:rgba(255,255,255,.15)}
+  :root{--bg:#1A1A1D;--surf:#2C2C2E;--t1:#F0EFEA;--t2:#9A9A9A;--t3:#5A5A5A;
+    --brd:rgba(255,255,255,.08);--brd2:rgba(255,255,255,.15)}
 }
+
+/* APP SHELL */
 .app{width:100%;max-width:480px;margin:0 auto;height:100vh;height:100dvh;display:flex;flex-direction:column;background:var(--bg);position:relative;overflow:hidden;padding-top:var(--st);font-family:var(--fn);color:var(--t1)}
 .screen{position:absolute;inset:0;display:flex;flex-direction:column;transition:opacity .25s,transform .3s cubic-bezier(.22,1,.36,1);padding-top:var(--st)}
 .screen.off{opacity:0;pointer-events:none;transform:translateY(14px)}
@@ -59,7 +63,8 @@ input,textarea{-webkit-user-select:auto;user-select:auto}
 .icon-btn svg{width:17px;height:17px;stroke:var(--t2);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
 .status-row{display:flex;align-items:center;gap:5px;padding:4px 20px 0;font-size:11px;color:var(--t3)}
 .sdot{width:5px;height:5px;border-radius:50%;background:var(--t3);transition:background .3s}
-.sdot.on{background:var(--ok)}.sdot.sy{background:var(--warn);animation:pulse .9s infinite}
+.sdot.on{background:var(--ok)}
+.sdot.sy{background:var(--warn);animation:pulse .9s infinite}
 
 /* TABS */
 .tabs-wrap{padding:8px 16px 0}
@@ -71,13 +76,6 @@ input,textarea{-webkit-user-select:auto;user-select:auto}
 
 /* MAIN */
 .main{flex:1;overflow-y:auto;overflow-x:hidden;padding:10px 16px 0;-webkit-overflow-scrolling:touch}
-
-/* MORNING VECTOR */
-.vec-block{background:var(--surf);border-radius:12px;border:0.5px solid rgba(26,122,230,.18);padding:13px 15px;margin-bottom:10px;cursor:pointer;transition:transform .2s cubic-bezier(.22,1,.36,1)}
-.vec-block:active{transform:scale(.985)}
-.vec-lbl{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;margin-bottom:5px}
-.vec-text{font-family:var(--fs);font-style:italic;font-size:13px;color:var(--t1);line-height:1.5}
-.vec-empty{font-size:12px;color:var(--t3);font-style:italic}
 
 /* PROGRESS BLOCK */
 .prog-block{background:var(--surf);border-radius:12px;border:0.5px solid rgba(42,157,143,.18);padding:13px 15px;margin-bottom:10px}
@@ -121,13 +119,9 @@ input,textarea{-webkit-user-select:auto;user-select:auto}
 .ai-preview{font-family:var(--fs);font-style:italic;font-size:12px;line-height:1.4;padding-left:8px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;border-left:2px solid}
 .ai-preview.none{color:var(--t3);border-left-color:var(--brd2);font-style:normal;font-family:var(--fn)}
 .swipe-hint{display:flex;align-items:center;justify-content:center;gap:6px;font-size:11px;color:var(--t3);margin-bottom:10px}
-
-/* SKILL TAGS */
 .skill-tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px}
 .skill-tag{font-size:10px;font-weight:500;padding:2px 7px;border-radius:100px;background:rgba(42,157,143,.08);color:var(--skill)}
-
-/* IDEA STAGE */
-.idea-stage{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:500;padding:2px 8px;border-radius:100px;margin-bottom:6px}
+.idea-stage-pill{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:500;padding:2px 8px;border-radius:100px;margin-bottom:6px}
 
 /* EMPTY */
 .empty{text-align:center;padding:40px 20px;color:var(--t3)}
@@ -142,7 +136,6 @@ input,textarea{-webkit-user-select:auto;user-select:auto}
 .bbar-stats{display:flex;gap:16px}
 .sn{font-family:var(--fs);font-size:18px;font-weight:500;color:var(--t1);line-height:1}
 .sl{font-size:10px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;color:var(--t3);margin-top:2px}
-.bbar-btns{display:flex;gap:8px}
 .fab{width:44px;height:44px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .2s cubic-bezier(.34,1.56,.64,1)}
 .fab:active{transform:scale(.88)}
 .fab svg{stroke-width:2.5;stroke-linecap:round;fill:none}
@@ -162,26 +155,64 @@ input,textarea{-webkit-user-select:auto;user-select:auto}
 .sh-stext{font-size:13px;color:var(--t1);line-height:1.55}
 .ai-answer{font-family:var(--fs);font-style:italic;font-size:14px;color:var(--t1);line-height:1.65}
 
+/* ═══ NEW: IDEA STAGE TABS ═══ */
+.stg-tabs{display:flex;gap:0;margin-bottom:12px;overflow-x:auto;padding-bottom:2px}
+.stg-tab{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 8px;cursor:pointer;border-radius:8px;transition:all .15s;flex-shrink:0;min-width:54px}
+.stg-tab:active{transform:scale(.95)}
+.stg-ico{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;border:1.5px solid var(--brd2);transition:all .2s}
+.stg-name{font-size:9px;font-weight:600;letter-spacing:.3px;text-transform:uppercase;color:var(--t3);transition:color .15s}
+.stg-tab.active .stg-ico{border-color:var(--idea);background:rgba(212,119,11,.08)}
+.stg-tab.active .stg-name{color:var(--idea)}
+.stg-tab.done .stg-ico{border-color:var(--ok);background:rgba(46,189,82,.08)}
+.stg-tab.done .stg-name{color:var(--ok)}
+.stg-conn{width:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;padding-bottom:14px}
+.stg-conn-line{width:10px;height:1.5px;background:var(--brd2);border-radius:1px}
+.stg-conn.done .stg-conn-line{background:var(--ok)}
+
+/* STAGE CONTENT FIELDS */
+.stg-field{margin-bottom:8px}
+.stg-field-lbl{font-size:9px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;color:var(--idea);margin-bottom:4px}
+.stg-field-text{font-size:13px;color:var(--t1);line-height:1.5}
+.stg-field-empty{font-size:12px;color:var(--t3);font-style:italic}
+.stg-ta{width:100%;border:1.5px solid var(--brd2);border-radius:8px;padding:9px 11px;font-family:var(--fn);font-size:13px;color:var(--t1);resize:none;background:var(--bg);outline:none;line-height:1.5;transition:border-color .15s}
+.stg-ta:focus{border-color:var(--idea)}
+.stg-btns{display:flex;gap:6px;margin-top:6px}
+.stg-btn{padding:7px 14px;border-radius:8px;border:none;font-family:var(--fn);font-size:12px;font-weight:500;cursor:pointer;transition:transform .15s}
+.stg-btn:active{transform:scale(.95)}
+
+/* ═══ NEW: IDEA DIALOG ═══ */
+.dialog-sec{margin-top:6px}
+.dialog-lbl{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--idea);margin-bottom:8px}
+.dialog-list{display:flex;flex-direction:column;gap:6px;margin-bottom:10px;max-height:300px;overflow-y:auto}
+.dialog-msg{border-radius:10px;padding:9px 12px;max-width:92%}
+.dialog-msg.user{background:var(--bg);border:0.5px solid var(--brd2);align-self:flex-end;margin-left:auto}
+.dialog-msg.ai{background:rgba(212,119,11,.05);border:0.5px solid rgba(212,119,11,.15);align-self:flex-start}
+.dialog-msg-stage{font-size:9px;font-weight:600;letter-spacing:.3px;text-transform:uppercase;color:var(--t3);margin-bottom:3px}
+.dialog-msg-text{font-size:13px;line-height:1.5;color:var(--t1)}
+.dialog-msg.ai .dialog-msg-text{font-family:var(--fs);font-style:italic}
+.dialog-msg-time{font-size:10px;color:var(--t3);margin-top:3px}
+.dialog-input{display:flex;gap:6px;margin-top:4px}
+.dialog-ta{flex:1;border:1.5px solid var(--brd2);border-radius:8px;padding:9px 11px;font-family:var(--fn);font-size:13px;color:var(--t1);resize:none;background:var(--bg);outline:none;line-height:1.4}
+.dialog-ta:focus{border-color:var(--idea)}
+.dialog-send{width:38px;height:38px;border-radius:50%;border:none;background:var(--idea);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .15s}
+.dialog-send:active{transform:scale(.9)}
+.dialog-send:disabled{opacity:.5;pointer-events:none}
+.dialog-send svg{width:16px;height:16px;stroke:#fff;stroke-width:2.5;fill:none;stroke-linecap:round}
+
 /* ADD ENTRY */
 .type-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
 .type-btn{flex:1;min-width:calc(25% - 6px);padding:10px 4px;border-radius:8px;border:1.5px solid var(--brd2);background:transparent;font-family:var(--fn);font-size:12px;font-weight:500;color:var(--t2);cursor:pointer;transition:all .15s;text-align:center}
 .type-btn.sel{color:#fff}
 .add-ta{width:100%;border:1.5px solid var(--brd2);border-radius:8px;padding:11px 13px;font-family:var(--fn);font-size:15px;color:var(--t1);resize:none;background:var(--bg);outline:none;line-height:1.55;transition:border-color .15s}
 .add-ta:focus{border-color:var(--acc)}
-.add-inp{width:100%;border:1.5px solid var(--brd2);border-radius:8px;padding:11px 13px;font-family:var(--fn);font-size:15px;color:var(--t1);background:var(--bg);outline:none;transition:border-color .15s;margin-bottom:8px}
-.add-inp:focus{border-color:var(--acc)}
 .guide-box{font-size:11px;color:var(--t2);line-height:1.5;padding:8px 10px;border-radius:8px;border:0.5px solid;margin-bottom:10px;display:none}
 .guide-box.on{display:block}
-
-/* IDEA FIELDS */
 .idea-fields{display:none;flex-direction:column;gap:8px;margin-bottom:10px}
 .idea-fields.on{display:flex}
 .idea-field{position:relative}
 .idea-label{position:absolute;left:10px;top:8px;font-size:9px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;color:var(--idea);pointer-events:none;z-index:1}
 .idea-ta{width:100%;border:1.5px solid var(--brd2);border-radius:8px;padding:24px 11px 9px;font-family:var(--fn);font-size:14px;color:var(--t1);resize:none;background:var(--bg);outline:none;line-height:1.5;transition:border-color .15s}
 .idea-ta:focus{border-color:var(--idea)}
-
-/* SKILL FIELDS */
 .skill-fields{display:none;flex-direction:column;gap:8px;margin-bottom:10px}
 .skill-fields.on{display:flex}
 .skill-pick{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px}
@@ -209,6 +240,18 @@ input,textarea{-webkit-user-select:auto;user-select:auto}
 .set-hint{font-size:11px;color:var(--t3);margin-top:4px;line-height:1.4}
 .set-div{height:0.5px;background:var(--brd);margin:6px 0 14px}
 
+/* SKILLS MANAGE */
+.skill-item{background:var(--bg);border-radius:10px;border:0.5px solid var(--brd2);padding:11px 13px;display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.skill-item-name{font-size:13px;font-weight:500;color:var(--t1);flex:1}
+.skill-item-lvl{font-size:11px;color:var(--skill);font-weight:500}
+.skill-item-del{width:24px;height:24px;border-radius:50%;border:none;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.skill-item-del:active{background:rgba(232,69,58,.08)}
+.skill-item-del svg{width:14px;height:14px;stroke:var(--del);stroke-width:2;fill:none;stroke-linecap:round}
+.add-skill-row{display:flex;gap:6px;margin-top:6px}
+.add-skill-inp{flex:1;border:1.5px solid var(--brd2);border-radius:8px;padding:8px 10px;font-family:var(--fn);font-size:13px;color:var(--t1);background:var(--bg);outline:none}
+.add-skill-inp:focus{border-color:var(--skill)}
+.add-skill-btn{padding:8px 14px;border-radius:8px;border:none;background:var(--skill);color:#fff;font-family:var(--fn);font-size:12px;font-weight:500;cursor:pointer}
+
 /* TOAST */
 .toast{position:fixed;bottom:calc(74px + var(--sb));left:50%;transform:translateX(-50%) translateY(12px);background:var(--t1);color:var(--bg);font-size:13px;font-weight:500;padding:10px 20px;border-radius:100px;z-index:500;opacity:0;transition:opacity .2s,transform .2s cubic-bezier(.22,1,.36,1);pointer-events:none;box-shadow:0 6px 18px rgba(30,25,10,.14);white-space:nowrap}
 .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
@@ -229,18 +272,6 @@ input,textarea{-webkit-user-select:auto;user-select:auto}
 .reveal-src{font-size:12px;color:var(--t3);line-height:1.5;padding-top:4px;border-top:0.5px solid var(--brd)}
 .reveal-src b{font-weight:500;color:var(--t2);font-style:normal}
 .reveal-hint{font-size:11px;color:var(--t3);text-align:center;margin-top:4px;opacity:.7}
-
-/* SKILL MANAGE */
-.skill-item{background:var(--bg);border-radius:10px;border:0.5px solid var(--brd2);padding:11px 13px;display:flex;align-items:center;gap:10px;margin-bottom:6px}
-.skill-item-name{font-size:13px;font-weight:500;color:var(--t1);flex:1}
-.skill-item-lvl{font-size:11px;color:var(--skill);font-weight:500}
-.skill-item-del{width:24px;height:24px;border-radius:50%;border:none;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.skill-item-del:active{background:rgba(232,69,58,.08)}
-.skill-item-del svg{width:14px;height:14px;stroke:var(--del);stroke-width:2;fill:none;stroke-linecap:round}
-.add-skill-row{display:flex;gap:6px;margin-top:6px}
-.add-skill-inp{flex:1;border:1.5px solid var(--brd2);border-radius:8px;padding:8px 10px;font-family:var(--fn);font-size:13px;color:var(--t1);background:var(--bg);outline:none}
-.add-skill-inp:focus{border-color:var(--skill)}
-.add-skill-btn{padding:8px 14px;border-radius:8px;border:none;background:var(--skill);color:#fff;font-family:var(--fn);font-size:12px;font-weight:500;cursor:pointer}
 
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
@@ -312,10 +343,9 @@ input,textarea{-webkit-user-select:auto;user-select:auto}
     </div>
   </div>
 
-  <!-- SHEET: entry detail -->
+  <!-- SHEETS -->
   <div class="sheet" id="shEntry"><div class="sh-bar"></div><div class="sh-body" id="shEntryBody"></div></div>
 
-  <!-- SHEET: add entry -->
   <div class="sheet" id="shAdd">
     <div class="sh-bar"></div>
     <div class="sh-body">
@@ -327,41 +357,28 @@ input,textarea{-webkit-user-select:auto;user-select:auto}
         <div class="type-btn" id="tb-insight" onclick="selType('insight',this)">⚡ Инсайт</div>
         <div class="type-btn" id="tb-action" onclick="selType('action',this)">🎯 Действие</div>
       </div>
-      <!-- IDEA GUIDE -->
       <div class="guide-box" id="ideaGuide" style="color:var(--idea);border-color:rgba(212,119,11,.2);background:rgba(212,119,11,.04)">
-        <b>Бизнес-идея</b> — опиши суть, для кого и какую проблему решает. Claude оценит потенциал и подскажет первый шаг.
+        <b>Бизнес-идея</b> — опиши суть, аудиторию и проблему. Дальше развивай идею через стадии и диалог с Claude.
       </div>
-      <!-- SKILL GUIDE -->
       <div class="guide-box" id="skillGuide" style="color:var(--skill);border-color:rgba(42,157,143,.2);background:rgba(42,157,143,.04)">
         <b>Обучение</b> — что изучаешь, что понял, какой прогресс. Claude поможет структурировать знания.
       </div>
-      <!-- INSIGHT GUIDE -->
       <div class="guide-box" id="insightGuide" style="color:var(--insight);border-color:rgba(124,93,199,.2);background:rgba(124,93,199,.04)">
         <b>Инсайт</b> — наблюдение, вывод, открытие. Claude найдёт связь с твоей траекторией.
       </div>
-      <!-- ACTION GUIDE -->
       <div class="guide-box" id="actionGuide" style="color:var(--action);border-color:rgba(199,93,138,.2);background:rgba(199,93,138,.04)">
         <b>Действие</b> — что конкретно сделал для роста. Claude отразит прогресс.
       </div>
-      <!-- IDEA FIELDS -->
       <div class="idea-fields" id="ideaFields">
         <div class="idea-field"><div class="idea-label">Суть идеи</div><textarea class="idea-ta" id="ideaWhat" rows="2" placeholder="Что за идея?"></textarea></div>
         <div class="idea-field"><div class="idea-label">Для кого</div><textarea class="idea-ta" id="ideaWho" rows="1" placeholder="Целевая аудитория"></textarea></div>
         <div class="idea-field"><div class="idea-label">Проблема</div><textarea class="idea-ta" id="ideaProblem" rows="2" placeholder="Какую боль решает?"></textarea></div>
         <div class="idea-field"><div class="idea-label">Ресурсы</div><textarea class="idea-ta" id="ideaRes" rows="1" placeholder="Что уже есть? Что нужно?"></textarea></div>
       </div>
-      <!-- SKILL FIELDS -->
       <div class="skill-fields" id="skillFields">
-        <div style="margin-bottom:4px">
-          <span class="f-lbl" style="color:var(--skill)">Навык</span>
-          <div class="skill-pick" id="skillPick"></div>
-        </div>
-        <div>
-          <span class="f-lbl" style="color:var(--skill)">Прогресс</span>
-          <div class="prog-pick" id="progPick"></div>
-        </div>
+        <div style="margin-bottom:4px"><span class="f-lbl" style="color:var(--skill)">Навык</span><div class="skill-pick" id="skillPick"></div></div>
+        <div><span class="f-lbl" style="color:var(--skill)">Прогресс</span><div class="prog-pick" id="progPick"></div></div>
       </div>
-      <!-- GENERAL TEXT -->
       <textarea class="add-ta" id="addText" rows="5" placeholder="Что узнал, понял, сделал?"></textarea>
       <div class="sh-btns">
         <button class="btn-g" onclick="closeSheet()">Отмена</button>
@@ -370,10 +387,8 @@ input,textarea{-webkit-user-select:auto;user-select:auto}
     </div>
   </div>
 
-  <!-- SHEET: week insight -->
   <div class="sheet" id="shWeek"><div class="sh-bar"></div><div class="sh-body" id="shWeekBody"></div></div>
 
-  <!-- SHEET: skills manage -->
   <div class="sheet" id="shSkills">
     <div class="sh-bar"></div>
     <div class="sh-body">
@@ -384,13 +399,10 @@ input,textarea{-webkit-user-select:auto;user-select:auto}
         <input class="add-skill-inp" id="newSkillInp" placeholder="Новый навык...">
         <button class="add-skill-btn" onclick="addSkill()">+</button>
       </div>
-      <div class="sh-btns" style="margin-top:14px">
-        <button class="btn-g" style="width:100%" onclick="closeSheet()">Закрыть</button>
-      </div>
+      <div class="sh-btns" style="margin-top:14px"><button class="btn-g" style="width:100%" onclick="closeSheet()">Закрыть</button></div>
     </div>
   </div>
 
-  <!-- SHEET: settings -->
   <div class="sheet" id="shSettings">
     <div class="sh-bar"></div>
     <div class="sh-body">
@@ -429,537 +441,911 @@ input,textarea{-webkit-user-select:auto;user-select:auto}
     </div>
   </div>
 </div>
-
 <script>
-// ═══ TINYGESTURE 3.0 ═══
-let passiveIfSupported=false;try{window.addEventListener('test',null,Object.defineProperty({},'passive',{get:function(){passiveIfSupported={passive:true};}}));}catch(e){}
-class TinyGesture{constructor(element,options){this.element=element;this.touch1=null;this.touchStartX=null;this.touchStartY=null;this.touchEndX=null;this.touchEndY=null;this.touchMove1=null;this.touchMoveX=null;this.touchMoveY=null;this.velocityX=null;this.velocityY=null;this.longPressTimer=null;this.doubleTapTimer=null;this.doubleTapWaiting=false;this.thresholdX=0;this.thresholdY=0;this.disregardVelocityThresholdX=0;this.disregardVelocityThresholdY=0;this.swipingHorizontal=false;this.swipingVertical=false;this.swipingDirection=null;this.handlers={panstart:[],panmove:[],panend:[],swipeleft:[],swiperight:[],swipeup:[],swipedown:[],tap:[],doubletap:[],longpress:[]};this._onTouchStart=this.onTouchStart.bind(this);this._onTouchMove=this.onTouchMove.bind(this);this._onTouchEnd=this.onTouchEnd.bind(this);this.opts=Object.assign({},TinyGesture.defaults,options);this.element.addEventListener('touchstart',this._onTouchStart,passiveIfSupported);this.element.addEventListener('touchmove',this._onTouchMove,passiveIfSupported);this.element.addEventListener('touchend',this._onTouchEnd,passiveIfSupported);if(this.opts.mouseSupport&&!('ontouchstart'in window)){this.element.addEventListener('mousedown',this._onTouchStart,passiveIfSupported);document.addEventListener('mousemove',this._onTouchMove,passiveIfSupported);document.addEventListener('mouseup',this._onTouchEnd,passiveIfSupported);}}destroy(){this.element.removeEventListener('touchstart',this._onTouchStart);this.element.removeEventListener('touchmove',this._onTouchMove);this.element.removeEventListener('touchend',this._onTouchEnd);this.element.removeEventListener('mousedown',this._onTouchStart);document.removeEventListener('mousemove',this._onTouchMove);document.removeEventListener('mouseup',this._onTouchEnd);clearTimeout(this.longPressTimer);clearTimeout(this.doubleTapTimer);}on(type,fn){if(this.handlers[type]){this.handlers[type].push(fn);return{cancel:()=>this.off(type,fn)};}}off(type,fn){if(this.handlers[type]){const i=this.handlers[type].indexOf(fn);if(i!==-1)this.handlers[type].splice(i,1);}}fire(type,e){for(const fn of this.handlers[type])fn(e);}onTouchStart(event){let didTouch1=false;if(event.type!=='mousedown'){if(!this.touch1){this.touch1=event.changedTouches[0];didTouch1=true;}if(!didTouch1)return;}if(didTouch1||event.type==='mousedown'){this.thresholdX=this.opts.threshold('x',this);this.thresholdY=this.opts.threshold('y',this);this.disregardVelocityThresholdX=this.opts.disregardVelocityThreshold('x',this);this.disregardVelocityThresholdY=this.opts.disregardVelocityThreshold('y',this);this.touchStartX=event.type==='mousedown'?event.screenX:this.touch1?.screenX||0;this.touchStartY=event.type==='mousedown'?event.screenY:this.touch1?.screenY||0;this.touchMoveX=null;this.touchMoveY=null;this.touchEndX=null;this.touchEndY=null;this.swipingDirection=null;this.longPressTimer=setTimeout(()=>this.fire('longpress',event),this.opts.longPressTime);this.fire('panstart',event);}}onTouchMove(event){if(event.type==='mousemove'&&(!this.touchStartX||this.touchEndX!==null))return;let touch1;if(event.type!=='mousemove'){touch1=[...event.changedTouches].find(t=>t.identifier===this.touch1?.identifier);this.touchMove1=touch1||this.touchMove1;}if(event.type==='mousemove'||touch1){const mx=(event.type==='mousemove'?event.screenX:touch1?.screenX??0)-(this.touchStartX??0);this.velocityX=mx-(this.touchMoveX??0);this.touchMoveX=mx;const my=(event.type==='mousemove'?event.screenY:touch1?.screenY??0)-(this.touchStartY??0);this.velocityY=my-(this.touchMoveY??0);this.touchMoveY=my;const ax=Math.abs(mx),ay=Math.abs(my);this.swipingHorizontal=ax>this.thresholdX;this.swipingVertical=ay>this.thresholdY;this.swipingDirection=ax>ay?this.swipingHorizontal?'horizontal':'pre-horizontal':this.swipingVertical?'vertical':'pre-vertical';if(Math.max(ax,ay)>this.opts.pressThreshold)clearTimeout(this.longPressTimer);this.fire('panmove',event);}}onTouchEnd(event){let touch1;if(event.type!=='mouseup'){touch1=[...event.changedTouches].find(t=>t.identifier===this.touch1?.identifier);if(![...event.touches].find(t=>t.identifier===this.touch1?.identifier)){this.touch1=null;this.touchMove1=null;}}if(event.type==='mouseup'&&(!this.touchStartX||this.touchEndX!==null))return;if(event.type==='mouseup'||touch1){this.touchEndX=event.type==='mouseup'?event.screenX:touch1?.screenX??0;this.touchEndY=event.type==='mouseup'?event.screenY:touch1?.screenY??0;this.fire('panend',event);clearTimeout(this.longPressTimer);const x=this.touchEndX-(this.touchStartX??0),ax=Math.abs(x);const y=this.touchEndY-(this.touchStartY??0),ay=Math.abs(y);if(ax>this.thresholdX||ay>this.thresholdY){if(ax>=ay){if(x<0&&((this.velocityX??0)<-this.opts.velocityThreshold||x<-this.disregardVelocityThresholdX))this.fire('swipeleft',event);else if(x>0&&((this.velocityX??0)>this.opts.velocityThreshold||x>this.disregardVelocityThresholdX))this.fire('swiperight',event);}else{if(y<0&&((this.velocityY??0)<-this.opts.velocityThreshold||y<-this.disregardVelocityThresholdY))this.fire('swipeup',event);else if(y>0&&((this.velocityY??0)>this.opts.velocityThreshold||y>this.disregardVelocityThresholdY))this.fire('swipedown',event);}}else if(ax<this.opts.pressThreshold&&ay<this.opts.pressThreshold){if(this.doubleTapWaiting){this.doubleTapWaiting=false;clearTimeout(this.doubleTapTimer);this.fire('doubletap',event);}else{this.doubleTapWaiting=true;this.doubleTapTimer=setTimeout(()=>this.doubleTapWaiting=false,this.opts.doubleTapTime);this.fire('tap',event);}}}}}
-TinyGesture.defaults={threshold:(type)=>Math.max(25,Math.floor(0.15*(type==='x'?window.innerWidth:window.innerHeight))),velocityThreshold:10,disregardVelocityThreshold:(type,self)=>Math.floor(0.5*(type==='x'?self.element.clientWidth:self.element.clientHeight)),pressThreshold:8,longPressTime:500,doubleTapTime:300,mouseSupport:true};
+// ═══ TINYGESTURE 3.0 (compact but readable) ═══
+let passiveIfSupported=false;
+try{window.addEventListener('test',null,Object.defineProperty({},'passive',{get(){passiveIfSupported={passive:true}}}));}catch(e){}
+
+class TinyGesture {
+  constructor(element, options) {
+    this.element = element;
+    this.touch1 = null;
+    this.touchStartX = null; this.touchStartY = null;
+    this.touchEndX = null; this.touchEndY = null;
+    this.touchMoveX = null; this.touchMoveY = null;
+    this.velocityX = null; this.velocityY = null;
+    this.longPressTimer = null; this.doubleTapTimer = null;
+    this.doubleTapWaiting = false;
+    this.thresholdX = 0; this.thresholdY = 0;
+    this.disregardVelocityThresholdX = 0; this.disregardVelocityThresholdY = 0;
+    this.swipingDirection = null;
+    this.handlers = {panstart:[],panmove:[],panend:[],swipeleft:[],swiperight:[],tap:[],doubletap:[],longpress:[]};
+    this._onS = this._handleStart.bind(this);
+    this._onM = this._handleMove.bind(this);
+    this._onE = this._handleEnd.bind(this);
+    this.opts = Object.assign({}, TinyGesture.defaults, options);
+    element.addEventListener('touchstart', this._onS, passiveIfSupported);
+    element.addEventListener('touchmove', this._onM, passiveIfSupported);
+    element.addEventListener('touchend', this._onE, passiveIfSupported);
+    if (this.opts.mouseSupport && !('ontouchstart' in window)) {
+      element.addEventListener('mousedown', this._onS, passiveIfSupported);
+      document.addEventListener('mousemove', this._onM, passiveIfSupported);
+      document.addEventListener('mouseup', this._onE, passiveIfSupported);
+    }
+  }
+  destroy() {
+    this.element.removeEventListener('touchstart', this._onS);
+    this.element.removeEventListener('touchmove', this._onM);
+    this.element.removeEventListener('touchend', this._onE);
+    this.element.removeEventListener('mousedown', this._onS);
+    document.removeEventListener('mousemove', this._onM);
+    document.removeEventListener('mouseup', this._onE);
+    clearTimeout(this.longPressTimer); clearTimeout(this.doubleTapTimer);
+  }
+  on(type, fn) { if (this.handlers[type]) { this.handlers[type].push(fn); return { cancel: () => this.off(type, fn) }; } }
+  off(type, fn) { const i = this.handlers[type]?.indexOf(fn); if (i >= 0) this.handlers[type].splice(i, 1); }
+  fire(type, event) { for (const fn of (this.handlers[type] || [])) fn(event); }
+  _handleStart(event) {
+    let didTouch = false;
+    if (event.type !== 'mousedown') { if (!this.touch1) { this.touch1 = event.changedTouches[0]; didTouch = true; } if (!didTouch) return; }
+    this.thresholdX = this.opts.threshold('x', this); this.thresholdY = this.opts.threshold('y', this);
+    this.disregardVelocityThresholdX = this.opts.disregardVelocityThreshold('x', this);
+    this.disregardVelocityThresholdY = this.opts.disregardVelocityThreshold('y', this);
+    this.touchStartX = event.type === 'mousedown' ? event.screenX : this.touch1?.screenX || 0;
+    this.touchStartY = event.type === 'mousedown' ? event.screenY : this.touch1?.screenY || 0;
+    this.touchMoveX = null; this.touchMoveY = null; this.touchEndX = null; this.swipingDirection = null;
+    this.longPressTimer = setTimeout(() => this.fire('longpress', event), this.opts.longPressTime);
+    this.fire('panstart', event);
+  }
+  _handleMove(event) {
+    if (event.type === 'mousemove' && (!this.touchStartX || this.touchEndX !== null)) return;
+    let touch1;
+    if (event.type !== 'mousemove') touch1 = [...event.changedTouches].find(t => t.identifier === this.touch1?.identifier);
+    if (event.type === 'mousemove' || touch1) {
+      const mx = (event.type === 'mousemove' ? event.screenX : touch1?.screenX ?? 0) - (this.touchStartX ?? 0);
+      this.velocityX = mx - (this.touchMoveX ?? 0); this.touchMoveX = mx;
+      const my = (event.type === 'mousemove' ? event.screenY : touch1?.screenY ?? 0) - (this.touchStartY ?? 0);
+      this.velocityY = my - (this.touchMoveY ?? 0); this.touchMoveY = my;
+      if (Math.max(Math.abs(mx), Math.abs(my)) > this.opts.pressThreshold) clearTimeout(this.longPressTimer);
+      this.fire('panmove', event);
+    }
+  }
+  _handleEnd(event) {
+    let touch1;
+    if (event.type !== 'mouseup') {
+      touch1 = [...event.changedTouches].find(t => t.identifier === this.touch1?.identifier);
+      if (![...event.touches].find(t => t.identifier === this.touch1?.identifier)) this.touch1 = null;
+    }
+    if (event.type === 'mouseup' && (!this.touchStartX || this.touchEndX !== null)) return;
+    if (event.type === 'mouseup' || touch1) {
+      this.touchEndX = event.type === 'mouseup' ? event.screenX : touch1?.screenX ?? 0;
+      this.touchEndY = event.type === 'mouseup' ? event.screenY : touch1?.screenY ?? 0;
+      this.fire('panend', event); clearTimeout(this.longPressTimer);
+      const x = this.touchEndX - (this.touchStartX ?? 0), ax = Math.abs(x);
+      const y = this.touchEndY - (this.touchStartY ?? 0), ay = Math.abs(y);
+      if (ax > this.thresholdX || ay > this.thresholdY) {
+        if (ax >= ay) {
+          if (x < 0 && ((this.velocityX ?? 0) < -this.opts.velocityThreshold || x < -this.disregardVelocityThresholdX)) this.fire('swipeleft', event);
+          else if (x > 0 && ((this.velocityX ?? 0) > this.opts.velocityThreshold || x > this.disregardVelocityThresholdX)) this.fire('swiperight', event);
+        }
+      } else if (ax < this.opts.pressThreshold && ay < this.opts.pressThreshold) {
+        if (this.doubleTapWaiting) { this.doubleTapWaiting = false; clearTimeout(this.doubleTapTimer); this.fire('doubletap', event); }
+        else { this.doubleTapWaiting = true; this.doubleTapTimer = setTimeout(() => this.doubleTapWaiting = false, this.opts.doubleTapTime); this.fire('tap', event); }
+      }
+    }
+  }
+}
+TinyGesture.defaults = {
+  threshold: (type) => Math.max(25, Math.floor(0.15 * (type === 'x' ? window.innerWidth : window.innerHeight))),
+  velocityThreshold: 10,
+  disregardVelocityThreshold: (type, self) => Math.floor(0.5 * (type === 'x' ? self.element.clientWidth : self.element.clientHeight)),
+  pressThreshold: 8, longPressTime: 500, doubleTapTime: 300, mouseSupport: true
+};
 
 // ═══ CONFIG ═══
-const APP_NAME='vector-v1';
-const FB_CONFIG={apiKey:"AIzaSyAgIA0PLvUOJsRN8tHRzC03evTTkt3KHHc",authDomain:"skills-tracker-3f21b.firebaseapp.com",projectId:"skills-tracker-3f21b",storageBucket:"skills-tracker-3f21b.firebasestorage.app",messagingSenderId:"108202530564",appId:"1:108202530564:web:31ecf70071f49a89abe251"};
+const APP_NAME = 'vector-v1';
+const FB_CONFIG = {
+  apiKey: "AIzaSyAgIA0PLvUOJsRN8tHRzC03evTTkt3KHHc",
+  authDomain: "skills-tracker-3f21b.firebaseapp.com",
+  projectId: "skills-tracker-3f21b",
+  storageBucket: "skills-tracker-3f21b.firebasestorage.app",
+  messagingSenderId: "108202530564",
+  appId: "1:108202530564:web:31ecf70071f49a89abe251"
+};
 
-const DEFAULT_IDEA_PROMPT='Человек записал бизнес-идею. Оцени потенциал по 3 критериям: 1) востребованность, 2) реализуемость с текущими ресурсами, 3) уникальность. Дай одну конкретную рекомендацию — первый шаг. 2–3 предложения, без воды. Тон прямой, конструктивный.';
-const DEFAULT_SKILL_PROMPT='Человек записал прогресс в обучении. Замечай паттерн: как он учится, что выбирает, где застревает. Подскажи один конкретный следующий шаг или ресурс. 2–3 предложения, конструктивно.';
-const DEFAULT_INSIGHT_PROMPT='Человек записал инсайт или наблюдение. Найди связь с его траекторией развития. Углуби мысль — покажи неочевидный аспект или следствие. 2 предложения, без советов.';
-const DEFAULT_ACTION_PROMPT='Человек записал конкретное действие для своего роста. Отрази что произошло — сдвиг, выбор, преодоление. Замечай разницу между «планировал» и «сделал». 2 предложения, тёплый тон.';
+// ═══ STAGE SYSTEM ═══
+const STAGES = ['seed', 'validate', 'plan', 'build', 'launch'];
+const STAGE_META = {
+  seed:     { icon: '🌱', name: 'Зерно',    color: '#D4770B', hint: 'Опиши суть, аудиторию, проблему, ресурсы' },
+  validate: { icon: '🔍', name: 'Проверка',  color: '#1A7AE6', hint: 'С кем поговорил? Что узнал? Есть спрос?' },
+  plan:     { icon: '📋', name: 'План',      color: '#7C5DC7', hint: 'Конкретные шаги, ресурсы, сроки, бюджет' },
+  build:    { icon: '🔨', name: 'Делаю',     color: '#2A9D8F', hint: 'Прогресс, блокеры, что работает, что нет' },
+  launch:   { icon: '🚀', name: 'Запуск',    color: '#2EBD52', hint: 'Результат, цифры, выводы, следующая итерация' }
+};
+
+// ═══ DEFAULT PROMPTS ═══
+const DEFAULT_IDEA_PROMPT = 'Ты — наставник-практик по бизнес-идеям. Человек развивает идею через стадии: зерно → проверка → план → делаю → запуск. На каждой стадии он пишет заметки и задаёт вопросы. Учитывай текущую стадию и всю историю развития идеи. Отвечай конкретно, 2–3 предложения. Задавай один уточняющий вопрос если нужно. Без воды.';
+const DEFAULT_SKILL_PROMPT = 'Человек записал прогресс в обучении. Замечай паттерн: как он учится, что выбирает, где застревает. Подскажи один конкретный следующий шаг или ресурс. 2–3 предложения, конструктивно.';
+const DEFAULT_INSIGHT_PROMPT = 'Человек записал инсайт или наблюдение. Найди связь с его траекторией развития. Углуби мысль — покажи неочевидный аспект или следствие. 2 предложения, без советов.';
+const DEFAULT_ACTION_PROMPT = 'Человек записал конкретное действие для своего роста. Отрази что произошло — сдвиг, выбор, преодоление. Замечай разницу между «планировал» и «сделал». 2 предложения, тёплый тон.';
 
 // ═══ STATE ═══
-let fbDb=null,fbAuth=null,fbOk=false,fbBusy=false;
-let userName='',userId='',lsKey='';
-let deckIdx=0,cardGesture=null;
-let addType='idea',curTab='all';
-let selSkillId=null,selProgress=0;
+let fbDb = null, fbAuth = null, fbOk = false, fbBusy = false;
+let userName = '', userId = '', lsKey = '';
+let deckIdx = 0, cardGesture = null;
+let addType = 'idea', curTab = 'all';
+let selSkillId = null, selProgress = 0;
+let viewStage = 'seed'; // текущая стадия в детали идеи
 
-let appData={
-  entries:[],
-  skills:[],
-  weekInsight:{text:'',weekHash:'',generatedAt:0},
-  settings:{
-    claudeKey:'',
-    baseContext:'',
-    ideaPrompt:'',
-    skillPrompt:'',
-    insightPrompt:'',
-    actionPrompt:''
+let appData = {
+  entries: [],
+  skills: [],
+  weekInsight: { text: '', weekHash: '', generatedAt: 0 },
+  settings: {
+    claudeKey: '',
+    baseContext: '',
+    ideaPrompt: '',
+    skillPrompt: '',
+    insightPrompt: '',
+    actionPrompt: ''
   }
 };
 
 // ═══ UTILS ═══
-const $=id=>document.getElementById(id);
-function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
-function simpleHash(s){let h=0;for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h=((h<<5)-h)+c;h=h&h;}return Math.abs(h).toString(36);}
-function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
-function todayISO(){return new Date().toISOString().split('T')[0]}
-const MO=['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
-const WD=['воскресенье','понедельник','вторник','среда','четверг','пятница','суббота'];
-function fmtDate(iso){const d=new Date(iso+'T12:00:00'),t=todayISO(),y=new Date(Date.now()-86400000).toISOString().split('T')[0];if(iso===t)return'сегодня';if(iso===y)return'вчера';return d.getDate()+' '+MO[d.getMonth()];}
-function fmtTime(ts){const d=new Date(ts);return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');}
-function getWeekHash(){const d=new Date(),s=new Date(d.getFullYear(),0,1),w=Math.ceil(((d-s)/86400000+s.getDay()+1)/7);return`${d.getFullYear()}-W${String(w).padStart(2,'0')}`;}
-function plural(n,a,b,c){const m=n%10,h=n%100;if(m===1&&h!==11)return a;if(m>=2&&m<=4&&(h<10||h>=20))return b;return c;}
-function typeLabel(t){return{idea:'идея',skill:'навык',insight:'инсайт',action:'действие'}[t]||t}
-function typeColor(t){return{idea:'var(--idea)',skill:'var(--skill)',insight:'var(--insight)',action:'var(--action)'}[t]||'var(--t2)'}
-function typeBg(t){return{idea:'rgba(212,119,11,.08)',skill:'rgba(42,157,143,.08)',insight:'rgba(124,93,199,.08)',action:'rgba(199,93,138,.08)'}[t]||'rgba(40,35,20,.05)'}
-function typeIcon(t){return{idea:'💡',skill:'📚',insight:'⚡',action:'🎯'}[t]||'📝'}
+const $ = id => document.getElementById(id);
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+function simpleHash(s) { let h = 0; for (let i = 0; i < s.length; i++) { const c = s.charCodeAt(i); h = ((h << 5) - h) + c; h = h & h; } return Math.abs(h).toString(36); }
+function esc(s) { return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+function todayISO() { return new Date().toISOString().split('T')[0]; }
+function getWeekHash() { const d = new Date(), s = new Date(d.getFullYear(), 0, 1), w = Math.ceil(((d - s) / 86400000 + s.getDay() + 1) / 7); return `${d.getFullYear()}-W${String(w).padStart(2, '0')}`; }
+function plural(n, a, b, c) { const m = n % 10, h = n % 100; if (m === 1 && h !== 11) return a; if (m >= 2 && m <= 4 && (h < 10 || h >= 20)) return b; return c; }
 
-// IDEA STAGES
-const STAGES=['seed','validate','plan','build','launch'];
-const STAGE_LABELS={seed:'зерно',validate:'проверка',plan:'план',build:'делаю',launch:'запуск'};
-function ideaStageColor(s){return{seed:'rgba(212,119,11,.1)',validate:'rgba(26,122,230,.1)',plan:'rgba(124,93,199,.1)',build:'rgba(42,157,143,.1)',launch:'rgba(46,189,82,.1)'}[s]||'rgba(40,35,20,.05)'}
-function ideaStageFg(s){return{seed:'var(--idea)',validate:'var(--acc)',plan:'var(--insight)',build:'var(--skill)',launch:'var(--ok)'}[s]||'var(--t2)'}
+const MONTHS = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+const WEEKDAYS = ['воскресенье','понедельник','вторник','среда','четверг','пятница','суббота'];
+
+function fmtDate(iso) {
+  const d = new Date(iso + 'T12:00:00'), t = todayISO();
+  const y = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+  if (iso === t) return 'сегодня';
+  if (iso === y) return 'вчера';
+  return d.getDate() + ' ' + MONTHS[d.getMonth()];
+}
+function fmtTime(ts) {
+  const d = new Date(ts);
+  return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+}
+function typeLabel(t) { return { idea: 'идея', skill: 'навык', insight: 'инсайт', action: 'действие' }[t] || t; }
+function typeColor(t) { return { idea: 'var(--idea)', skill: 'var(--skill)', insight: 'var(--insight)', action: 'var(--action)' }[t] || 'var(--t2)'; }
+function typeBg(t) { return { idea: 'rgba(212,119,11,.08)', skill: 'rgba(42,157,143,.08)', insight: 'rgba(124,93,199,.08)', action: 'rgba(199,93,138,.08)' }[t] || 'rgba(40,35,20,.05)'; }
+function typeIcon(t) { return { idea: '💡', skill: '📚', insight: '⚡', action: '🎯' }[t] || '📝'; }
 
 // ═══ TOAST ═══
-let _tt=null;
-function toast(msg,dur=2600){const el=$('toast');el.textContent=msg;el.classList.add('on');clearTimeout(_tt);_tt=setTimeout(()=>el.classList.remove('on'),dur);}
-function setStatus(cls,txt){const d=$('sdot'),t=$('stxt');if(d)d.className='sdot '+cls;if(t)t.textContent=txt;}
+let _tt = null;
+function toast(msg, dur = 2600) {
+  const el = $('toast'); el.textContent = msg; el.classList.add('on');
+  clearTimeout(_tt); _tt = setTimeout(() => el.classList.remove('on'), dur);
+}
+function setStatus(cls, txt) {
+  const d = $('sdot'), t = $('stxt');
+  if (d) d.className = 'sdot ' + cls;
+  if (t) t.textContent = txt;
+}
 
 // ═══ STORAGE ═══
-function saveLs(){try{localStorage.setItem(lsKey,JSON.stringify(appData));}catch(e){}}
-function loadLs(){try{const r=localStorage.getItem(lsKey);if(r){const d=JSON.parse(r);appData={...appData,...d};}}catch(e){}}
-let _syncT=null;
-function sync(){saveLs();clearTimeout(_syncT);_syncT=setTimeout(saveFb,1800);}
+function saveLs() { try { localStorage.setItem(lsKey, JSON.stringify(appData)); } catch (e) {} }
+function loadLs() { try { const r = localStorage.getItem(lsKey); if (r) appData = { ...appData, ...JSON.parse(r) }; } catch (e) {} }
+let _syncT = null;
+function sync() { saveLs(); clearTimeout(_syncT); _syncT = setTimeout(saveFb, 1800); }
 
 // ═══ FIREBASE ═══
-function initFb(){
-  try{
-    firebase.initializeApp(FB_CONFIG);fbDb=firebase.firestore();fbAuth=firebase.auth();
-    fbAuth.signInAnonymously().then(()=>{fbOk=true;setStatus('on','Онлайн');loadFb();}).catch(()=>{fbOk=false;setStatus('','Офлайн');});
-  }catch(e){fbOk=false;setStatus('','Офлайн');}
+function initFb() {
+  try {
+    firebase.initializeApp(FB_CONFIG); fbDb = firebase.firestore(); fbAuth = firebase.auth();
+    fbAuth.signInAnonymously().then(() => { fbOk = true; setStatus('on', 'Онлайн'); loadFb(); })
+      .catch(() => { fbOk = false; setStatus('', 'Офлайн'); });
+  } catch (e) { fbOk = false; setStatus('', 'Офлайн'); }
 }
-function fbRef(){return fbDb.collection('apps').doc(APP_NAME).collection('users').doc(userId);}
-async function saveFb(){
-  if(!fbOk||fbBusy)return;
-  if(!appData.entries?.length&&!appData.settings?.claudeKey)return;
-  fbBusy=true;setStatus('sy','Сохранение...');
-  try{await fbRef().set({data:JSON.stringify(appData),ts:firebase.firestore.FieldValue.serverTimestamp(),by:userName},{merge:true});setStatus('on','Сохранено');}
-  catch(e){setStatus('','Ошибка');}finally{fbBusy=false;}
+function fbRef() { return fbDb.collection('apps').doc(APP_NAME).collection('users').doc(userId); }
+
+async function saveFb() {
+  if (!fbOk || fbBusy) return;
+  if (!appData.entries?.length && !appData.settings?.claudeKey) return;
+  fbBusy = true; setStatus('sy', 'Сохранение...');
+  try {
+    await fbRef().set({ data: JSON.stringify(appData), ts: firebase.firestore.FieldValue.serverTimestamp(), by: userName }, { merge: true });
+    setStatus('on', 'Сохранено');
+  } catch (e) { setStatus('', 'Ошибка'); }
+  finally { fbBusy = false; }
 }
-async function loadFb(){
-  if(window._fbL||!fbOk)return;window._fbL=true;fbBusy=true;setStatus('sy','Загрузка...');
-  try{
-    const doc=await fbRef().get();
-    if(doc.exists&&doc.data().data){
-      const remote=JSON.parse(doc.data().data);
-      appData={...appData,...remote};
-      saveLs();render();setStatus('on','Загружено');
-    }else setStatus('on','Готово');
-  }catch(e){setStatus('','Офлайн');}finally{fbBusy=false;window._fbL=false;}
+
+async function loadFb() {
+  if (window._fbL || !fbOk) return;
+  window._fbL = true; fbBusy = true; setStatus('sy', 'Загрузка...');
+  try {
+    const doc = await fbRef().get();
+    if (doc.exists && doc.data().data) {
+      appData = { ...appData, ...JSON.parse(doc.data().data) };
+      saveLs(); render(); setStatus('on', 'Загружено');
+    } else setStatus('on', 'Готово');
+  } catch (e) { setStatus('', 'Офлайн'); }
+  finally { fbBusy = false; window._fbL = false; }
 }
 
 // ═══ LOGIN ═══
-function doLogin(){
-  const n=$('inName').value.trim();if(!n){toast('Введи логин');return;}
-  userName=n;userId=simpleHash(n);lsKey=APP_NAME+'_'+userId;
-  localStorage.setItem(APP_NAME+'_last',n);
+function doLogin() {
+  const n = $('inName').value.trim();
+  if (!n) { toast('Введи логин'); return; }
+  userName = n; userId = simpleHash(n); lsKey = APP_NAME + '_' + userId;
+  localStorage.setItem(APP_NAME + '_last', n);
   loadLs();
-  $('sLogin').classList.add('off');$('sMain').classList.remove('off');
-  updateHeader();render();initFb();
-  toast('Привет, '+n.split(/[\s_]/)[0]+'!');
+  $('sLogin').classList.add('off'); $('sMain').classList.remove('off');
+  updateHeader(); render(); initFb();
+  toast('Привет, ' + n.split(/[\s_]/)[0] + '!');
 }
-document.addEventListener('DOMContentLoaded',()=>{
-  const last=localStorage.getItem(APP_NAME+'_last');
-  if(last)$('inName').value=last;
-  $('inName').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+document.addEventListener('DOMContentLoaded', () => {
+  const last = localStorage.getItem(APP_NAME + '_last');
+  if (last) $('inName').value = last;
+  $('inName').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
 });
 
 // ═══ HEADER ═══
-function updateHeader(){
-  const d=new Date();
-  $('hDate').textContent=WD[d.getDay()]+', '+d.getDate()+' '+MO[d.getMonth()];
-  const entries=appData.entries||[];
-  $('statTotal').textContent=entries.length;
-  $('statStreak').textContent=calcStreak();
-  $('statIdeas').textContent=entries.filter(e=>e.type==='idea').length;
+function updateHeader() {
+  const d = new Date();
+  $('hDate').textContent = WEEKDAYS[d.getDay()] + ', ' + d.getDate() + ' ' + MONTHS[d.getMonth()];
+  const entries = appData.entries || [];
+  $('statTotal').textContent = entries.length;
+  $('statStreak').textContent = calcStreak();
+  $('statIdeas').textContent = entries.filter(e => e.type === 'idea').length;
 }
-function calcStreak(){
-  const e=appData.entries||[];if(!e.length)return 0;
-  const sorted=[...e].sort((a,b)=>b.date.localeCompare(a.date));
-  let s=0,cur=new Date();cur.setHours(0,0,0,0);
-  for(const x of sorted){const d=new Date(x.date+'T00:00:00'),diff=Math.round((cur-d)/86400000);if(diff===0||diff===1){s++;cur=d;}else break;}
-  return s;
+
+function calcStreak() {
+  const entries = appData.entries || [];
+  if (!entries.length) return 0;
+  const sorted = [...entries].sort((a, b) => b.date.localeCompare(a.date));
+  let streak = 0, cur = new Date(); cur.setHours(0, 0, 0, 0);
+  for (const x of sorted) {
+    const d = new Date(x.date + 'T00:00:00');
+    const diff = Math.round((cur - d) / 86400000);
+    if (diff === 0 || diff === 1) { streak++; cur = d; } else break;
+  }
+  return streak;
 }
 
 // ═══ TABS ═══
-function switchTab(t){
-  curTab=t;deckIdx=0;
-  ['All','Ideas','Skills','Insights'].forEach(x=>{
-    const el=$('tab'+x);if(el)el.classList.toggle('on',x.toLowerCase()===t);
+function switchTab(tab) {
+  curTab = tab; deckIdx = 0;
+  ['All', 'Ideas', 'Skills', 'Insights'].forEach(x => {
+    $('tab' + x)?.classList.toggle('on', x.toLowerCase() === tab);
   });
   render();
 }
 
+function updateBadges() {
+  const entries = appData.entries || [];
+  $('bIdeas').textContent = entries.filter(x => x.type === 'idea').length;
+  $('bSkills').textContent = entries.filter(x => x.type === 'skill').length;
+}
+
+function getSkillLevel(skillId) {
+  const entries = (appData.entries || []).filter(e => e.type === 'skill' && e.skillId === skillId);
+  if (!entries.length) return 0;
+  return entries.sort((a, b) => b.createdAt - a.createdAt)[0].progress || 0;
+}
+
 // ═══ RENDER ═══
-function render(){
-  updateHeader();updateBadges();
-  const mc=$('mainContent');
-  let entries=(appData.entries||[]).slice().sort((a,b)=>b.createdAt-a.createdAt);
-  if(curTab==='ideas')entries=entries.filter(e=>e.type==='idea');
-  else if(curTab==='skills')entries=entries.filter(e=>e.type==='skill');
-  else if(curTab==='insights')entries=entries.filter(e=>e.type==='insight'||e.type==='action');
+function render() {
+  updateHeader(); updateBadges();
+  const mc = $('mainContent');
+  let entries = (appData.entries || []).slice().sort((a, b) => b.createdAt - a.createdAt);
 
-  let html='';
+  if (curTab === 'ideas') entries = entries.filter(e => e.type === 'idea');
+  else if (curTab === 'skills') entries = entries.filter(e => e.type === 'skill');
+  else if (curTab === 'insights') entries = entries.filter(e => e.type === 'insight' || e.type === 'action');
 
-  // BLOCKS only on "all" tab
-  if(curTab==='all'){
+  let html = '';
+
+  // ── Dashboard blocks (only on "all" tab) ──
+  if (curTab === 'all') {
     // Skills progress
-    const skills=appData.skills||[];
-    if(skills.length){
-      html+=`<div class="prog-block">
+    const skills = appData.skills || [];
+    if (skills.length) {
+      html += `<div class="prog-block">
         <div class="prog-lbl">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
           навыки · прогресс
         </div>
-        <div class="prog-bars">${skills.slice(0,5).map(sk=>{
-          const lvl=getSkillLevel(sk.id);
-          return`<div class="prog-row">
-            <div class="prog-name">${esc(sk.name)}</div>
-            <div class="prog-bar"><div class="prog-fill" style="width:${lvl}%"></div></div>
-            <div class="prog-pct">${lvl}%</div>
-          </div>`;
+        <div class="prog-bars">${skills.slice(0, 5).map(sk => {
+          const lvl = getSkillLevel(sk.id);
+          return `<div class="prog-row"><div class="prog-name">${esc(sk.name)}</div><div class="prog-bar"><div class="prog-fill" style="width:${lvl}%"></div></div><div class="prog-pct">${lvl}%</div></div>`;
         }).join('')}</div>
       </div>`;
     }
 
     // Ideas pipeline
-    const ideas=entries.filter(e=>e.type==='idea');
-    if(ideas.length){
-      const stages={};STAGES.forEach(s=>stages[s]=0);
-      ideas.forEach(e=>{const st=e.stage||'seed';if(stages[st]!==undefined)stages[st]++;});
-      html+=`<div class="pipe-block" onclick="switchTab('ideas')">
+    const ideas = entries.filter(e => e.type === 'idea');
+    if (ideas.length) {
+      const stageCounts = {}; STAGES.forEach(s => stageCounts[s] = 0);
+      ideas.forEach(e => { const st = e.stage || 'seed'; if (stageCounts[st] !== undefined) stageCounts[st]++; });
+      html += `<div class="pipe-block" onclick="switchTab('ideas')">
         <div class="pipe-lbl">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
           воронка идей
         </div>
-        <div class="pipe-stages">${STAGES.map(s=>`<div class="pipe-dot${stages[s]>0?' active':''}" title="${STAGE_LABELS[s]}"></div>`).join('<span style="font-size:8px;color:var(--t3)">→</span>')}</div>
-        <div class="pipe-text"><b>${ideas.length}</b> ${plural(ideas.length,'идея','идеи','идей')} · нажми чтобы открыть</div>
+        <div class="pipe-stages">${STAGES.map(s => `<div class="pipe-dot${stageCounts[s] > 0 ? ' active' : ''}"></div>`).join('<span style="font-size:8px;color:var(--t3)">→</span>')}</div>
+        <div class="pipe-text"><b>${ideas.length}</b> ${plural(ideas.length, 'идея', 'идеи', 'идей')}</div>
       </div>`;
     }
 
     // Week insight
-    const wh=getWeekHash();
-    html+=`<div class="ai-week" onclick="openWeekInsight()">
+    const weekHash = getWeekHash();
+    html += `<div class="ai-week" onclick="openWeekInsight()">
       <div class="ai-week-lbl"><div class="ai-wdot"></div>вектор недели</div>
-      ${appData.weekInsight?.text&&appData.weekInsight?.weekHash===wh
-        ?`<div class="ai-week-text">"${esc(appData.weekInsight.text)}"</div>`
-        :`<div style="font-size:12px;color:var(--t3);font-style:italic">Накопится 3+ записей — появится анализ</div>`}
+      ${appData.weekInsight?.text && appData.weekInsight?.weekHash === weekHash
+        ? `<div class="ai-week-text">"${esc(appData.weekInsight.text)}"</div>`
+        : `<div style="font-size:12px;color:var(--t3);font-style:italic">Накопится 3+ записей — появится анализ</div>`}
     </div>`;
   }
 
-  // Entries stack
-  if(!entries.length){
-    html+=`<div class="empty">
+  // ── Card stack ──
+  if (!entries.length) {
+    html += `<div class="empty">
       <div class="empty-ico"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
       <div class="empty-t">Нет записей</div>
       <div class="empty-s">Нажми + чтобы начать</div>
     </div>`;
-  }else{
-    html+=`<div class="sec">${curTab==='all'?'записи':curTab==='ideas'?'идеи':curTab==='skills'?'навыки':'инсайты'}</div><div class="stack" id="eStack">`;
-    const show=entries.slice(deckIdx,deckIdx+3);
-    show.forEach((e,i)=>{
-      const cls=i===0?'top':i===1?'mid':'bot';
-      const sk=e.skillId?(appData.skills||[]).find(s=>s.id===e.skillId):null;
-      html+=`<div class="ecard ${cls}" id="ec${e.id}" onclick="openEntry('${e.id}')">
+  } else {
+    const secLabels = { all: 'записи', ideas: 'идеи', skills: 'навыки', insights: 'инсайты' };
+    html += `<div class="sec">${secLabels[curTab] || 'записи'}</div><div class="stack" id="eStack">`;
+
+    const show = entries.slice(deckIdx, deckIdx + 3);
+    show.forEach((entry, i) => {
+      const cls = i === 0 ? 'top' : i === 1 ? 'mid' : 'bot';
+      const skill = entry.skillId ? (appData.skills || []).find(s => s.id === entry.skillId) : null;
+      const lastAiMsg = (entry.dialog || []).filter(m => m.role === 'ai').slice(-1)[0];
+
+      html += `<div class="ecard ${cls}" onclick="openEntry('${entry.id}')">
         <div class="ecard-header">
-          <span class="ecard-type" style="background:${typeBg(e.type)};color:${typeColor(e.type)}">${typeIcon(e.type)} ${typeLabel(e.type)}</span>
-          <span class="ecard-day">${fmtDate(e.date)}${e.createdAt?' · '+fmtTime(e.createdAt):''}</span>
+          <span class="ecard-type" style="background:${typeBg(entry.type)};color:${typeColor(entry.type)}">${typeIcon(entry.type)} ${typeLabel(entry.type)}</span>
+          <span class="ecard-day">${fmtDate(entry.date)}${entry.createdAt ? ' · ' + fmtTime(entry.createdAt) : ''}</span>
         </div>
-        ${e.title?`<div class="ecard-title">${esc(e.title)}</div>`:''}
-        ${e.type==='idea'&&e.stage?`<div class="idea-stage" style="background:${ideaStageColor(e.stage)};color:${ideaStageFg(e.stage)}">${STAGE_LABELS[e.stage]||e.stage}</div>`:''}
-        ${sk?`<div class="skill-tags"><span class="skill-tag">${esc(sk.name)}${e.progress?' · '+e.progress+'%':''}</span></div>`:''}
-        <div class="ecard-text">${esc(e.text)}</div>
-        ${e.response
-          ?`<div class="ai-preview has" style="color:${typeColor(e.type)};border-left-color:${typeColor(e.type)}">"${esc(e.response)}"</div>`
-          :`<div class="ai-preview none">нажми чтобы спросить Claude</div>`}
+        ${entry.title ? `<div class="ecard-title">${esc(entry.title)}</div>` : ''}
+        ${entry.type === 'idea' && entry.stage
+          ? `<div class="idea-stage-pill" style="background:${STAGE_META[entry.stage]?.color || '#888'}18;color:${STAGE_META[entry.stage]?.color || '#888'}">${STAGE_META[entry.stage]?.icon} ${STAGE_META[entry.stage]?.name}${entry.dialog?.length ? ' · ' + entry.dialog.length + '💬' : ''}</div>`
+          : ''}
+        ${skill ? `<div class="skill-tags"><span class="skill-tag">${esc(skill.name)}${entry.progress ? ' · ' + entry.progress + '%' : ''}</span></div>` : ''}
+        <div class="ecard-text">${esc(entry.text)}</div>
+        ${lastAiMsg
+          ? `<div class="ai-preview has" style="color:${typeColor(entry.type)};border-left-color:${typeColor(entry.type)}">"${esc(lastAiMsg.text)}"</div>`
+          : entry.response
+            ? `<div class="ai-preview has" style="color:${typeColor(entry.type)};border-left-color:${typeColor(entry.type)}">"${esc(entry.response)}"</div>`
+            : `<div class="ai-preview none">открой карточку</div>`}
       </div>`;
     });
-    html+=`</div><div class="swipe-hint"><span style="font-size:13px">‹</span><span>листай между записями</span><span style="font-size:13px">›</span></div>`;
+
+    html += `</div><div class="swipe-hint"><span style="font-size:13px">‹</span><span>листай между записями</span><span style="font-size:13px">›</span></div>`;
   }
-  mc.innerHTML=html;
-  if(entries.length)initStackGesture(entries);
-}
 
-function updateBadges(){
-  const e=appData.entries||[];
-  $('bIdeas').textContent=e.filter(x=>x.type==='idea').length;
-  $('bSkills').textContent=e.filter(x=>x.type==='skill').length;
-}
-
-function getSkillLevel(skillId){
-  const entries=(appData.entries||[]).filter(e=>e.type==='skill'&&e.skillId===skillId);
-  if(!entries.length)return 0;
-  const last=entries.sort((a,b)=>b.createdAt-a.createdAt)[0];
-  return last.progress||0;
+  mc.innerHTML = html;
+  if (entries.length) initStackGesture(entries);
 }
 
 // ═══ STACK GESTURE ═══
-function initStackGesture(entries){
-  const stk=$('eStack');if(!stk)return;
-  const top=stk.querySelector('.ecard.top');if(!top)return;
-  top.addEventListener('touchstart',e=>e.preventDefault(),{passive:false});
-  top.addEventListener('touchmove',e=>e.preventDefault(),{passive:false});
-  if(cardGesture)cardGesture.destroy();
-  cardGesture=new TinyGesture(top,{mouseSupport:true,pressThreshold:8});
-  let dragging=false;
-  cardGesture.on('panstart',()=>dragging=false);
-  cardGesture.on('panmove',()=>{
-    const dx=cardGesture.touchMoveX;
-    if(Math.abs(dx)>6)dragging=true;
-    top.style.transition='none';
-    top.style.transform=`translateX(${dx*.85}px) rotate(${dx*.04}deg)`;
+function initStackGesture(entries) {
+  const stk = $('eStack'); if (!stk) return;
+  const top = stk.querySelector('.ecard.top'); if (!top) return;
+
+  top.addEventListener('touchstart', e => e.preventDefault(), { passive: false });
+  top.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
+
+  if (cardGesture) cardGesture.destroy();
+  cardGesture = new TinyGesture(top, { mouseSupport: true, pressThreshold: 8 });
+  let dragging = false;
+
+  cardGesture.on('panstart', () => dragging = false);
+  cardGesture.on('panmove', () => {
+    const dx = cardGesture.touchMoveX;
+    if (Math.abs(dx) > 6) dragging = true;
+    top.style.transition = 'none';
+    top.style.transform = `translateX(${dx * .85}px) rotate(${dx * .04}deg)`;
   });
-  cardGesture.on('panend',()=>{
-    const dx=cardGesture.touchMoveX,vx=cardGesture.velocityX;
-    const commit=Math.abs(dx)>70||Math.abs(vx)>1.5;
-    if(commit){
-      const dir=dx<0?'left':'right';
-      top.style.transition='transform .3s cubic-bezier(.22,1,.36,1),opacity .25s';
-      top.style.transform=dir==='left'?'translateX(-130%) rotate(-8deg)':'translateX(130%) rotate(8deg)';
-      top.style.opacity='0';
-      if(dir==='left')deckIdx=Math.min(deckIdx+1,entries.length-1);
-      else deckIdx=Math.max(deckIdx-1,0);
-      setTimeout(render,280);
-    }else{
-      top.style.transition='transform .4s cubic-bezier(.175,.885,.32,1.275)';
-      top.style.transform='';
+  cardGesture.on('panend', () => {
+    const dx = cardGesture.touchMoveX, vx = cardGesture.velocityX;
+    const commit = Math.abs(dx) > 70 || Math.abs(vx) > 1.5;
+    if (commit) {
+      const dir = dx < 0 ? 'left' : 'right';
+      top.style.transition = 'transform .3s cubic-bezier(.22,1,.36,1), opacity .25s';
+      top.style.transform = dir === 'left' ? 'translateX(-130%) rotate(-8deg)' : 'translateX(130%) rotate(8deg)';
+      top.style.opacity = '0';
+      if (dir === 'left') deckIdx = Math.min(deckIdx + 1, entries.length - 1);
+      else deckIdx = Math.max(deckIdx - 1, 0);
+      setTimeout(render, 280);
+    } else {
+      top.style.transition = 'transform .4s cubic-bezier(.175,.885,.32,1.275)';
+      top.style.transform = '';
     }
   });
-  cardGesture.on('tap',()=>{if(!dragging){const e=entries[deckIdx];if(e)openEntry(e.id);}});
+  cardGesture.on('tap', () => {
+    if (!dragging) { const e = entries[deckIdx]; if (e) openEntry(e.id); }
+  });
 }
 
 // ═══ SHEETS ═══
-const ALL_SHEETS=['shEntry','shAdd','shWeek','shSkills','shSettings'];
-function openSheet(id){$('ov').classList.add('on');ALL_SHEETS.forEach(s=>$(s).classList.remove('on'));$(id).classList.add('on');}
-function closeSheet(){$('ov').classList.remove('on');ALL_SHEETS.forEach(s=>$(s).classList.remove('on'));}
+const ALL_SHEETS = ['shEntry', 'shAdd', 'shWeek', 'shSkills', 'shSettings'];
+function openSheet(id) { $('ov').classList.add('on'); ALL_SHEETS.forEach(s => $(s).classList.remove('on')); $(id).classList.add('on'); }
+function closeSheet() { $('ov').classList.remove('on'); ALL_SHEETS.forEach(s => $(s).classList.remove('on')); }
 
-// ═══ ENTRY DETAIL ═══
-function openEntry(id){
-  const e=(appData.entries||[]).find(x=>x.id===id);if(!e)return;
-  const sk=e.skillId?(appData.skills||[]).find(s=>s.id===e.skillId):null;
-  const col=typeColor(e.type);
+// ═══════════════════════════════════════════════════════════
+// ENTRY DETAIL — routes idea vs other types
+// ═══════════════════════════════════════════════════════════
+function openEntry(id) {
+  const entry = (appData.entries || []).find(x => x.id === id);
+  if (!entry) return;
 
-  let content='';
-  if(e.type==='idea'&&e.idea){
-    const fields=[{k:'Суть',v:e.idea.what},{k:'Для кого',v:e.idea.who},{k:'Проблема',v:e.idea.problem},{k:'Ресурсы',v:e.idea.resources}];
-    content=`<div class="sh-sec"><div class="sh-slbl" style="color:var(--idea)">бизнес-идея</div>
-      ${fields.map(f=>`<div style="margin-bottom:6px"><span style="font-size:10px;font-weight:600;letter-spacing:.3px;text-transform:uppercase;color:var(--idea)">${f.k}</span><div style="font-size:13px;color:${f.v?'var(--t1)':'var(--t3)'};line-height:1.5;margin-top:2px">${f.v?esc(f.v):'<i>не заполнено</i>'}</div></div>`).join('')}
-      ${e.stage?`<div style="margin-top:6px"><span style="font-size:10px;font-weight:600;letter-spacing:.3px;text-transform:uppercase;color:var(--t3)">Стадия</span><div style="margin-top:4px;display:flex;gap:4px">${STAGES.map(s=>`<span onclick="setStage('${id}','${s}')" style="cursor:pointer;padding:4px 8px;border-radius:100px;font-size:10px;font-weight:500;background:${e.stage===s?ideaStageColor(s):'transparent'};color:${e.stage===s?ideaStageFg(s):'var(--t3)'};border:0.5px solid ${e.stage===s?ideaStageFg(s)+'30':'var(--brd2)'}">${STAGE_LABELS[s]}</span>`).join('')}</div></div>`:''}
-    </div>`;
-  }else{
-    content=`<div class="sh-sec"><div class="sh-slbl">запись</div>`;
-    if(sk)content+=`<div style="margin-bottom:6px"><span class="skill-tag">${esc(sk.name)}${e.progress?' · '+e.progress+'%':''}</span></div>`;
-    content+=`<div class="sh-stext">${esc(e.text)}</div></div>`;
+  // Idea → full stage + dialog view
+  if (entry.type === 'idea') {
+    openIdeaDetail(entry);
+    return;
   }
 
-  let respBlock='';
-  if(e.response){
-    respBlock=`<div class="sh-sec" style="border-color:${col}30;background:${col.replace('var(','rgba(').replace(')','').split('--')[0]}">
-      <div class="sh-slbl" style="color:${col}">ответ Claude</div>
-      <div class="ai-answer">"${esc(e.response)}"</div>
-    </div>`;
-  }else{
-    respBlock=`<div class="sh-sec"><div class="sh-slbl" style="color:${col}">ответ Claude</div>
-      <div class="sh-stext" style="color:var(--t3);font-style:italic">Ещё не запрошен.</div></div>`;
-  }
+  // Non-idea entries: simple detail view
+  const skill = entry.skillId ? (appData.skills || []).find(s => s.id === entry.skillId) : null;
+  const color = typeColor(entry.type);
 
-  $('shEntryBody').innerHTML=`
-    <div class="sh-title">${e.title?esc(e.title):fmtDate(e.date)}</div>
-    <div class="sh-sub">${typeIcon(e.type)} ${typeLabel(e.type)} · ${fmtDate(e.date)}${e.createdAt?' · '+fmtTime(e.createdAt):''}</div>
+  let content = `<div class="sh-sec"><div class="sh-slbl">запись</div>`;
+  if (skill) content += `<div style="margin-bottom:6px"><span class="skill-tag">${esc(skill.name)}${entry.progress ? ' · ' + entry.progress + '%' : ''}</span></div>`;
+  content += `<div class="sh-stext">${esc(entry.text)}</div></div>`;
+
+  let responseBlock = entry.response
+    ? `<div class="sh-sec" style="border-color:${color}30"><div class="sh-slbl" style="color:${color}">ответ Claude</div><div class="ai-answer">"${esc(entry.response)}"</div></div>`
+    : `<div class="sh-sec"><div class="sh-slbl" style="color:${color}">ответ Claude</div><div class="sh-stext" style="color:var(--t3);font-style:italic">Ещё не запрошен.</div></div>`;
+
+  $('shEntryBody').innerHTML = `
+    <div class="sh-title">${entry.title || fmtDate(entry.date)}</div>
+    <div class="sh-sub">${typeIcon(entry.type)} ${typeLabel(entry.type)} · ${fmtDate(entry.date)}${entry.createdAt ? ' · ' + fmtTime(entry.createdAt) : ''}</div>
     ${content}
-    ${respBlock}
+    ${responseBlock}
     <div class="sh-btns">
       <button class="btn-g" onclick="closeSheet()">Закрыть</button>
-      <button class="btn-p" id="askBtn" style="background:${col}" onclick="askClaude('${id}',this)">${e.response?'Переспросить':'Спросить Claude'}</button>
+      <button class="btn-p" style="background:${color}" onclick="askClaudeSimple('${id}',this)">${entry.response ? 'Переспросить' : 'Спросить Claude'}</button>
     </div>
     <div style="height:6px"></div>
     <div class="sh-btns"><button class="btn-g btn-del" onclick="delEntry('${id}')">Удалить запись</button></div>`;
   openSheet('shEntry');
 }
 
-function setStage(id,stage){
-  const e=(appData.entries||[]).find(x=>x.id===id);
-  if(e){e.stage=stage;sync();openEntry(id);toast('Стадия: '+STAGE_LABELS[stage]);}
+// ═══════════════════════════════════════════════════════════
+// IDEA DETAIL — stage system + dialog (NEW)
+// ═══════════════════════════════════════════════════════════
+function openIdeaDetail(entry) {
+  if (!entry.stageNotes) entry.stageNotes = {};
+  if (!entry.dialog) entry.dialog = [];
+  viewStage = entry.stage || 'seed';
+  renderIdeaDetail(entry);
+  openSheet('shEntry');
 }
 
-function delEntry(id){
-  if(!confirm('Удалить?'))return;
-  appData.entries=(appData.entries||[]).filter(x=>x.id!==id);
-  deckIdx=Math.max(0,deckIdx-1);sync();closeSheet();render();toast('Удалено');
+function renderIdeaDetail(entry) {
+  const currentStageIdx = STAGES.indexOf(entry.stage || 'seed');
+
+  // ── Stage tabs ──
+  let tabsHtml = '<div class="stg-tabs">';
+  STAGES.forEach((stage, i) => {
+    const meta = STAGE_META[stage];
+    const isDone = i < currentStageIdx;
+    const isActive = stage === entry.stage;
+    const isViewing = stage === viewStage;
+
+    if (i > 0) {
+      tabsHtml += `<div class="stg-conn${i <= currentStageIdx ? ' done' : ''}"><div class="stg-conn-line"></div></div>`;
+    }
+
+    let tabClass = 'stg-tab';
+    if (isDone) tabClass += ' done';
+    if (isActive && !isDone) tabClass += ' active';
+
+    tabsHtml += `<div class="${tabClass}" onclick="switchViewStage('${entry.id}','${stage}')"
+      style="${isViewing ? 'background:' + (isDone ? 'rgba(46,189,82,.06)' : 'rgba(212,119,11,.06)') : ''}">
+      <div class="stg-ico">${meta.icon}</div>
+      <div class="stg-name">${meta.name}</div>
+    </div>`;
+  });
+  tabsHtml += '</div>';
+
+  // ── Stage content ──
+  const stageMeta = STAGE_META[viewStage];
+  const viewIdx = STAGES.indexOf(viewStage);
+  const canEdit = viewIdx <= currentStageIdx;
+  const notes = entry.stageNotes[viewStage] || '';
+  const isCurrentStage = viewStage === entry.stage;
+  const nextStage = STAGES[currentStageIdx + 1];
+
+  let stageContent = '';
+
+  // Seed stage: show original idea fields
+  if (viewStage === 'seed' && entry.idea) {
+    const fields = [
+      { key: 'Суть идеи', val: entry.idea.what },
+      { key: 'Для кого', val: entry.idea.who },
+      { key: 'Проблема', val: entry.idea.problem },
+      { key: 'Ресурсы', val: entry.idea.resources }
+    ];
+    stageContent += fields.map(f =>
+      `<div class="stg-field"><div class="stg-field-lbl">${f.key}</div><div class="${f.val ? 'stg-field-text' : 'stg-field-empty'}">${f.val ? esc(f.val) : '—'}</div></div>`
+    ).join('');
+  }
+
+  // Notes field for this stage
+  stageContent += `<div class="stg-field" style="margin-top:8px">
+    <div class="stg-field-lbl" style="color:${stageMeta.color}">${stageMeta.icon} ${stageMeta.name} — заметки</div>
+    <div style="font-size:10px;color:var(--t3);margin-bottom:6px">${stageMeta.hint}</div>`;
+
+  if (canEdit) {
+    stageContent += `<textarea class="stg-ta" id="stageNotesTA" rows="3" placeholder="${stageMeta.hint}" style="border-color:${stageMeta.color}30">${esc(notes)}</textarea>
+    <div class="stg-btns">
+      <button class="stg-btn" style="background:${stageMeta.color};color:#fff" onclick="saveStageNotes('${entry.id}','${viewStage}')">Сохранить</button>
+      ${isCurrentStage && nextStage
+        ? `<button class="stg-btn" style="background:transparent;color:var(--ok);border:1.5px solid rgba(46,189,82,.3)" onclick="advanceStage('${entry.id}')">→ ${STAGE_META[nextStage].icon} ${STAGE_META[nextStage].name}</button>`
+        : ''}
+    </div>`;
+  } else {
+    stageContent += notes
+      ? `<div class="stg-field-text">${esc(notes)}</div>`
+      : `<div class="stg-field-empty">Сначала пройди предыдущие стадии</div>`;
+  }
+  stageContent += '</div>';
+
+  // ── Dialog with Claude ──
+  const stageDialog = entry.dialog.filter(m => m.stage === viewStage);
+  const totalDialog = entry.dialog.length;
+
+  let dialogHtml = `<div class="dialog-sec">
+    <div class="dialog-lbl">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+      диалог · ${stageMeta.name}${stageDialog.length ? ' · ' + stageDialog.length : ''}
+    </div>
+    <div class="dialog-list" id="dialogList">`;
+
+  if (!stageDialog.length) {
+    dialogHtml += `<div style="font-size:12px;color:var(--t3);font-style:italic;text-align:center;padding:12px 0">Задай вопрос Claude на стадии «${stageMeta.name}»</div>`;
+  } else {
+    stageDialog.forEach(msg => {
+      dialogHtml += `<div class="dialog-msg ${msg.role === 'ai' ? 'ai' : 'user'}">
+        ${msg.role === 'ai' ? `<div class="dialog-msg-stage">${STAGE_META[msg.stage]?.icon || ''} Claude</div>` : ''}
+        <div class="dialog-msg-text">${esc(msg.text)}</div>
+        <div class="dialog-msg-time">${fmtTime(msg.ts)}</div>
+      </div>`;
+    });
+  }
+
+  dialogHtml += `</div>
+    <div class="dialog-input">
+      <textarea class="dialog-ta" id="dialogInput" rows="2" placeholder="Спроси Claude про эту идею..."></textarea>
+      <button class="dialog-send" id="dialogSendBtn" onclick="sendIdeaMessage('${entry.id}')">
+        <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </div>
+  </div>`;
+
+  // ── Assembly ──
+  $('shEntryBody').innerHTML = `
+    <div class="sh-title">${esc(entry.title || 'Идея')}</div>
+    <div class="sh-sub">💡 идея · ${fmtDate(entry.date)} · ${totalDialog} ${plural(totalDialog, 'сообщение', 'сообщения', 'сообщений')}</div>
+    ${tabsHtml}
+    ${stageContent}
+    ${dialogHtml}
+    <div style="height:6px"></div>
+    <div class="sh-btns"><button class="btn-g btn-del" onclick="delEntry('${entry.id}')">Удалить идею</button></div>`;
+
+  // Scroll dialog to bottom
+  setTimeout(() => { const dl = $('dialogList'); if (dl) dl.scrollTop = dl.scrollHeight; }, 100);
+}
+
+function switchViewStage(entryId, stage) {
+  viewStage = stage;
+  const entry = (appData.entries || []).find(x => x.id === entryId);
+  if (entry) renderIdeaDetail(entry);
+}
+
+function saveStageNotes(entryId, stage) {
+  const entry = (appData.entries || []).find(x => x.id === entryId);
+  if (!entry) return;
+  if (!entry.stageNotes) entry.stageNotes = {};
+  const ta = $('stageNotesTA');
+  entry.stageNotes[stage] = ta?.value?.trim() || '';
+  sync(); toast('Сохранено');
+}
+
+function advanceStage(entryId) {
+  const entry = (appData.entries || []).find(x => x.id === entryId);
+  if (!entry) return;
+  const curIdx = STAGES.indexOf(entry.stage || 'seed');
+  if (curIdx < STAGES.length - 1) {
+    entry.stage = STAGES[curIdx + 1];
+    viewStage = entry.stage;
+    sync(); renderIdeaDetail(entry);
+    toast(STAGE_META[entry.stage].icon + ' ' + STAGE_META[entry.stage].name);
+  }
+}
+
+// ═══ IDEA DIALOG WITH CLAUDE (NEW) ═══
+async function sendIdeaMessage(entryId) {
+  const key = appData.settings?.claudeKey;
+  if (!key) { toast('Нужен API ключ ⚙'); return; }
+
+  const entry = (appData.entries || []).find(x => x.id === entryId);
+  if (!entry) return;
+  const inp = $('dialogInput');
+  const text = inp?.value?.trim();
+  if (!text) { toast('Напиши вопрос'); return; }
+
+  // Add user message immediately
+  if (!entry.dialog) entry.dialog = [];
+  entry.dialog.push({ role: 'user', text, ts: Date.now(), stage: viewStage });
+  inp.value = '';
+  renderIdeaDetail(entry);
+
+  const btn = $('dialogSendBtn');
+  if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spin" style="width:12px;height:12px"></span>'; }
+
+  // Build context
+  const ctx = appData.settings?.baseContext || '';
+  const ideaPrompt = appData.settings?.ideaPrompt || DEFAULT_IDEA_PROMPT;
+  const idea = entry.idea || {};
+  const stageMeta = STAGE_META[viewStage];
+
+  let ideaContext = `Идея: ${entry.title}\n`;
+  if (idea.what) ideaContext += `Суть: ${idea.what}\n`;
+  if (idea.who) ideaContext += `Аудитория: ${idea.who}\n`;
+  if (idea.problem) ideaContext += `Проблема: ${idea.problem}\n`;
+  if (idea.resources) ideaContext += `Ресурсы: ${idea.resources}\n`;
+  ideaContext += `\nТекущая стадия: ${stageMeta.icon} ${stageMeta.name}\n`;
+
+  // Include all stage notes
+  STAGES.forEach(s => {
+    if (entry.stageNotes?.[s]) {
+      ideaContext += `\n[${STAGE_META[s].name}] ${entry.stageNotes[s]}`;
+    }
+  });
+
+  // Build multi-turn messages (last 12)
+  const messages = entry.dialog.slice(-12).map(m => ({
+    role: m.role === 'ai' ? 'assistant' : 'user',
+    content: m.text
+  }));
+
+  const systemPrompt = [ctx, ideaPrompt, ideaContext].filter(Boolean).join('\n\n');
+
+  try {
+    const response = await callClaudeMessages(systemPrompt, messages, 400);
+    entry.dialog.push({ role: 'ai', text: response.trim(), ts: Date.now(), stage: viewStage });
+    sync(); renderIdeaDetail(entry);
+  } catch (err) {
+    toast('Ошибка: ' + err.message);
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = '<svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>';
+    }
+  }
+}
+
+// ═══ SIMPLE ASK CLAUDE (non-idea entries) ═══
+async function askClaudeSimple(id, btn) {
+  const key = appData.settings?.claudeKey;
+  if (!key) { toast('Нужен API ключ ⚙'); return; }
+  const entry = (appData.entries || []).find(x => x.id === id);
+  if (!entry) return;
+  btn.disabled = true; btn.innerHTML = '<span class="spin"></span>';
+
+  const ctx = appData.settings?.baseContext || '';
+  const prompts = {
+    skill: appData.settings?.skillPrompt || DEFAULT_SKILL_PROMPT,
+    insight: appData.settings?.insightPrompt || DEFAULT_INSIGHT_PROMPT,
+    action: appData.settings?.actionPrompt || DEFAULT_ACTION_PROMPT
+  };
+  const sys = [ctx, prompts[entry.type] || ''].filter(Boolean).join('\n\n');
+  const userMsg = `[${typeLabel(entry.type)}] ${entry.date}:\n${entry.text}`;
+
+  try {
+    const response = await callClaudeSystem(sys, userMsg, 400);
+    entry.response = response.trim();
+    sync(); closeSheet();
+    showReveal(typeIcon(entry.type) + ' ' + typeLabel(entry.type), typeColor(entry.type), entry.response, entry.title || fmtDate(entry.date));
+  } catch (err) {
+    toast('Ошибка: ' + err.message);
+    btn.disabled = false; btn.textContent = 'Попробовать снова';
+  }
+}
+
+function delEntry(id) {
+  if (!confirm('Удалить?')) return;
+  appData.entries = (appData.entries || []).filter(x => x.id !== id);
+  deckIdx = Math.max(0, deckIdx - 1);
+  sync(); closeSheet(); render(); toast('Удалено');
 }
 
 // ═══ ADD ENTRY ═══
-function openAdd(){
-  $('addText').value='';
-  ['ideaWhat','ideaWho','ideaProblem','ideaRes'].forEach(id=>{if($(id))$(id).value='';});
-  selSkillId=null;selProgress=0;
-  selType('idea',document.getElementById('tb-idea'));
+function openAdd() {
+  $('addText').value = '';
+  ['ideaWhat', 'ideaWho', 'ideaProblem', 'ideaRes'].forEach(id => { if ($(id)) $(id).value = ''; });
+  selSkillId = null; selProgress = 0;
+  selType('idea', document.getElementById('tb-idea'));
   openSheet('shAdd');
-  setTimeout(()=>{if(addType==='idea')$('ideaWhat').focus();else $('addText').focus();},380);
+  setTimeout(() => { if (addType === 'idea') $('ideaWhat').focus(); else $('addText').focus(); }, 380);
 }
-function selType(type,el){
-  addType=type;
-  document.querySelectorAll('.type-btn').forEach(b=>{b.classList.remove('sel');b.style.background='transparent';b.style.borderColor='';b.style.color='';});
+
+function selType(type, el) {
+  addType = type;
+  document.querySelectorAll('.type-btn').forEach(b => {
+    b.classList.remove('sel'); b.style.background = 'transparent'; b.style.borderColor = ''; b.style.color = '';
+  });
   el.classList.add('sel');
-  const colors={idea:'var(--idea)',skill:'var(--skill)',insight:'var(--insight)',action:'var(--action)'};
-  el.style.background=colors[type]||'var(--t2)';el.style.borderColor=colors[type]||'';el.style.color='#fff';
+  const colors = { idea: 'var(--idea)', skill: 'var(--skill)', insight: 'var(--insight)', action: 'var(--action)' };
+  el.style.background = colors[type] || 'var(--t2)';
+  el.style.borderColor = colors[type] || '';
+  el.style.color = '#fff';
 
   // Show/hide guides
-  ['idea','skill','insight','action'].forEach(t=>{
-    const g=$(t+'Guide');if(g)g.classList.toggle('on',t===type);
+  ['idea', 'skill', 'insight', 'action'].forEach(t => {
+    const guide = $(t + 'Guide');
+    if (guide) guide.classList.toggle('on', t === type);
   });
 
   // Show/hide fields
-  $('ideaFields').classList.toggle('on',type==='idea');
-  $('skillFields').classList.toggle('on',type==='skill');
-  const ta=$('addText');
-  if(type==='idea'){ta.style.display='none';}
-  else{
-    ta.style.display='block';
-    if(type==='skill')ta.placeholder='Что изучал, что понял, какой результат?';
-    else if(type==='insight')ta.placeholder='Какой инсайт? Что заметил?';
-    else if(type==='action')ta.placeholder='Что конкретно сделал?';
+  $('ideaFields').classList.toggle('on', type === 'idea');
+  $('skillFields').classList.toggle('on', type === 'skill');
+
+  const ta = $('addText');
+  if (type === 'idea') { ta.style.display = 'none'; }
+  else {
+    ta.style.display = 'block';
+    if (type === 'skill') { ta.placeholder = 'Что изучал, что понял, какой результат?'; renderSkillPicker(); }
+    else if (type === 'insight') ta.placeholder = 'Какой инсайт? Что заметил?';
+    else if (type === 'action') ta.placeholder = 'Что конкретно сделал?';
   }
-
-  // Render skill picker
-  if(type==='skill')renderSkillPicker();
 }
 
-function renderSkillPicker(){
-  const skills=appData.skills||[];
-  $('skillPick').innerHTML=skills.map(sk=>
-    `<div class="skill-opt${selSkillId===sk.id?' sel':''}" onclick="pickSkill('${sk.id}',this)">${esc(sk.name)}</div>`
-  ).join('')+(skills.length?'':'<span style="font-size:12px;color:var(--t3)">Добавь навыки через 📚</span>');
+function renderSkillPicker() {
+  const skills = appData.skills || [];
+  $('skillPick').innerHTML = skills.map(sk =>
+    `<div class="skill-opt${selSkillId === sk.id ? ' sel' : ''}" onclick="pickSkill('${sk.id}',this)">${esc(sk.name)}</div>`
+  ).join('') || '<span style="font-size:12px;color:var(--t3)">Добавь навыки через 📚</span>';
 
-  $('progPick').innerHTML=[10,25,40,55,70,85,100].map(p=>
-    `<div class="prog-opt${selProgress===p?' sel':''}" onclick="pickProgress(${p},this)">${p}</div>`
-  ).join('')+'<span style="font-size:10px;color:var(--t3);margin-left:4px">%</span>';
+  $('progPick').innerHTML = [10, 25, 40, 55, 70, 85, 100].map(p =>
+    `<div class="prog-opt${selProgress === p ? ' sel' : ''}" onclick="pickProgress(${p},this)">${p}</div>`
+  ).join('') + '<span style="font-size:10px;color:var(--t3);margin-left:4px">%</span>';
 }
 
-function pickSkill(id,el){
-  selSkillId=id;
-  document.querySelectorAll('.skill-opt').forEach(o=>o.classList.remove('sel'));
+function pickSkill(id, el) {
+  selSkillId = id;
+  document.querySelectorAll('.skill-opt').forEach(o => o.classList.remove('sel'));
   el.classList.add('sel');
 }
-function pickProgress(p,el){
-  selProgress=p;
-  document.querySelectorAll('.prog-opt').forEach(o=>o.classList.remove('sel'));
+function pickProgress(p, el) {
+  selProgress = p;
+  document.querySelectorAll('.prog-opt').forEach(o => o.classList.remove('sel'));
   el.classList.add('sel');
 }
 
-function saveEntry(){
-  if(!appData.entries)appData.entries=[];
-  const now=Date.now();
+function saveEntry() {
+  if (!appData.entries) appData.entries = [];
+  const now = Date.now();
 
-  if(addType==='idea'){
-    const what=$('ideaWhat').value.trim();
-    if(!what){toast('Опиши идею');return;}
-    const who=$('ideaWho').value.trim();
-    const problem=$('ideaProblem').value.trim();
-    const resources=$('ideaRes').value.trim();
-    const text=`${what}${who?' · Для: '+who:''}${problem?' · Проблема: '+problem:''}`;
-    appData.entries.push({id:uid(),date:todayISO(),type:'idea',title:what.slice(0,60),text:text,
-      idea:{what,who,problem,resources},stage:'seed',response:null,createdAt:now});
-  }else if(addType==='skill'){
-    const txt=$('addText').value.trim();
-    if(!txt){toast('Напиши что изучал');return;}
-    const sk=selSkillId?(appData.skills||[]).find(s=>s.id===selSkillId):null;
-    appData.entries.push({id:uid(),date:todayISO(),type:'skill',title:sk?sk.name:'Обучение',text:txt,
-      skillId:selSkillId,progress:selProgress,response:null,createdAt:now});
-  }else{
-    const txt=$('addText').value.trim();
-    if(!txt){toast('Напиши что-нибудь');return;}
-    appData.entries.push({id:uid(),date:todayISO(),type:addType,title:txt.slice(0,50),text:txt,
-      response:null,createdAt:now});
+  if (addType === 'idea') {
+    const what = $('ideaWhat').value.trim();
+    if (!what) { toast('Опиши идею'); return; }
+    const who = $('ideaWho').value.trim();
+    const problem = $('ideaProblem').value.trim();
+    const resources = $('ideaRes').value.trim();
+    const text = `${what}${who ? ' · Для: ' + who : ''}${problem ? ' · Проблема: ' + problem : ''}`;
+    appData.entries.push({
+      id: uid(), date: todayISO(), type: 'idea', title: what.slice(0, 60), text: text,
+      idea: { what, who, problem, resources },
+      stage: 'seed', stageNotes: {}, dialog: [],
+      response: null, createdAt: now
+    });
+  } else if (addType === 'skill') {
+    const txt = $('addText').value.trim();
+    if (!txt) { toast('Напиши что изучал'); return; }
+    const skill = selSkillId ? (appData.skills || []).find(s => s.id === selSkillId) : null;
+    appData.entries.push({
+      id: uid(), date: todayISO(), type: 'skill', title: skill ? skill.name : 'Обучение', text: txt,
+      skillId: selSkillId, progress: selProgress, response: null, createdAt: now
+    });
+  } else {
+    const txt = $('addText').value.trim();
+    if (!txt) { toast('Напиши что-нибудь'); return; }
+    appData.entries.push({
+      id: uid(), date: todayISO(), type: addType, title: txt.slice(0, 50), text: txt,
+      response: null, createdAt: now
+    });
   }
-  deckIdx=0;sync();closeSheet();render();toast('Сохранено ✓');
+
+  deckIdx = 0; sync(); closeSheet(); render(); toast('Сохранено ✓');
 }
 
 // ═══ SKILLS MANAGE ═══
-function openSkillsManage(){
-  renderSkillsList();
-  openSheet('shSkills');
-}
-function renderSkillsList(){
-  const skills=appData.skills||[];
-  $('skillsList').innerHTML=skills.map((sk,i)=>{
-    const lvl=getSkillLevel(sk.id);
-    return`<div class="skill-item">
+function openSkillsManage() { renderSkillsList(); openSheet('shSkills'); }
+
+function renderSkillsList() {
+  const skills = appData.skills || [];
+  $('skillsList').innerHTML = skills.map((sk, i) => {
+    const lvl = getSkillLevel(sk.id);
+    return `<div class="skill-item">
       <div class="skill-item-name">${esc(sk.name)}</div>
       <div class="skill-item-lvl">${lvl}%</div>
       <button class="skill-item-del" onclick="removeSkill(${i})"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     </div>`;
-  }).join('')||'<div style="font-size:12px;color:var(--t3);padding:8px 0;font-style:italic">Пока нет навыков</div>';
+  }).join('') || '<div style="font-size:12px;color:var(--t3);padding:8px 0;font-style:italic">Пока нет навыков</div>';
 }
-function addSkill(){
-  if(!appData.skills)appData.skills=[];
-  const inp=$('newSkillInp');
-  const name=inp.value.trim();
-  if(!name){toast('Введи название');return;}
-  appData.skills.push({id:uid(),name});
-  inp.value='';
-  sync();renderSkillsList();render();
+
+function addSkill() {
+  if (!appData.skills) appData.skills = [];
+  const inp = $('newSkillInp');
+  const name = inp.value.trim();
+  if (!name) { toast('Введи название'); return; }
+  appData.skills.push({ id: uid(), name });
+  inp.value = '';
+  sync(); renderSkillsList(); render();
 }
-function removeSkill(idx){
-  if(!confirm('Удалить навык?'))return;
-  appData.skills.splice(idx,1);
-  sync();renderSkillsList();render();
+
+function removeSkill(idx) {
+  if (!confirm('Удалить навык?')) return;
+  appData.skills.splice(idx, 1);
+  sync(); renderSkillsList(); render();
 }
 
 // ═══ WEEK INSIGHT ═══
-async function openWeekInsight(){
-  const wh=getWeekHash();
-  const weekAgo=new Date(Date.now()-7*86400000).toISOString().split('T')[0];
-  const recent=(appData.entries||[]).filter(e=>e.date>=weekAgo);
-  $('shWeekBody').innerHTML=`
+async function openWeekInsight() {
+  const weekHash = getWeekHash();
+  const weekAgo = new Date(Date.now() - 7 * 86400000).toISOString().split('T')[0];
+  const recent = (appData.entries || []).filter(e => e.date >= weekAgo);
+
+  $('shWeekBody').innerHTML = `
     <div class="sh-title">Вектор недели</div>
-    <div class="sh-sub">${recent.length} ${plural(recent.length,'запись','записи','записей')} за 7 дней</div>
-    ${appData.weekInsight?.text&&appData.weekInsight?.weekHash===wh
-      ?`<div class="sh-sec" style="border-color:rgba(124,93,199,.15)">
+    <div class="sh-sub">${recent.length} ${plural(recent.length, 'запись', 'записи', 'записей')} за 7 дней</div>
+    ${appData.weekInsight?.text && appData.weekInsight?.weekHash === weekHash
+      ? `<div class="sh-sec" style="border-color:rgba(124,93,199,.15)">
           <div class="sh-slbl" style="color:var(--insight)">анализ</div>
           <div class="ai-answer" style="color:var(--t1)">"${esc(appData.weekInsight.text)}"</div>
         </div>`
-      :`<div class="sh-sec"><div class="sh-slbl">анализ</div>
-          <div class="sh-stext" style="color:var(--t3);font-style:italic">${recent.length<3?'Нужно минимум 3 записи.':'Нажми кнопку ниже.'}</div>
+      : `<div class="sh-sec"><div class="sh-slbl">анализ</div>
+          <div class="sh-stext" style="color:var(--t3);font-style:italic">${recent.length < 3 ? 'Нужно минимум 3 записи.' : 'Нажми кнопку ниже.'}</div>
         </div>`}
     <div class="sh-btns">
       <button class="btn-g" onclick="closeSheet()">Закрыть</button>
-      ${recent.length>=3?`<button class="btn-p" style="background:var(--insight)" id="wBtn" onclick="genWeek(this)">${appData.weekInsight?.weekHash===wh?'Обновить':'Сгенерировать'}</button>`:''}
+      ${recent.length >= 3 ? `<button class="btn-p" style="background:var(--insight)" id="weekBtn" onclick="genWeekInsight(this)">${appData.weekInsight?.weekHash === weekHash ? 'Обновить' : 'Сгенерировать'}</button>` : ''}
     </div>`;
   openSheet('shWeek');
 }
-async function genWeek(btn){
-  const key=appData.settings?.claudeKey;if(!key){toast('Нужен API ключ ⚙');return;}
-  btn.disabled=true;btn.innerHTML='<span class="spin"></span>';
-  const weekAgo=new Date(Date.now()-7*86400000).toISOString().split('T')[0];
-  const recent=(appData.entries||[]).filter(e=>e.date>=weekAgo).sort((a,b)=>a.date.localeCompare(b.date));
-  const lines=recent.map(e=>`${e.date} [${typeLabel(e.type)}] ${e.title||''}: ${e.text}`).join('\n');
-  const ctx=appData.settings?.baseContext||'';
-  const sys=ctx?ctx+'\n\n':'';
-  try{
-    const r=await callClaude(sys+'Записи развития за неделю:\n'+lines+'\n\nПроанализируй вектор развития: куда движется человек, какие паттерны в обучении и идеях, где точка роста. Обрати внимание на связи между идеями, навыками и инсайтами. 3–4 предложения. Без перечисления — найди направление. Только текст.',500);
-    appData.weekInsight={text:r.trim(),weekHash:getWeekHash(),generatedAt:Date.now()};
-    sync();closeSheet();showRevealGeneric('вектор недели','var(--insight)',appData.weekInsight.text,recent.length+' '+plural(recent.length,'запись','записи','записей')+' за 7 дней');
-  }catch(e){toast('Ошибка: '+e.message);btn.disabled=false;btn.textContent='Попробовать снова';}
+
+async function genWeekInsight(btn) {
+  const key = appData.settings?.claudeKey;
+  if (!key) { toast('Нужен API ключ ⚙'); return; }
+  btn.disabled = true; btn.innerHTML = '<span class="spin"></span>';
+
+  const weekAgo = new Date(Date.now() - 7 * 86400000).toISOString().split('T')[0];
+  const recent = (appData.entries || []).filter(e => e.date >= weekAgo).sort((a, b) => a.date.localeCompare(b.date));
+  const lines = recent.map(e => `${e.date} [${typeLabel(e.type)}] ${e.title || ''}: ${e.text}`).join('\n');
+  const ctx = appData.settings?.baseContext || '';
+
+  try {
+    const response = await callClaudeSystem(
+      ctx ? ctx + '\n\n' : '',
+      'Записи развития за неделю:\n' + lines + '\n\nПроанализируй вектор развития: куда движется человек, какие паттерны в обучении и идеях, где точка роста. Обрати внимание на связи между идеями, навыками и инсайтами. 3–4 предложения. Без перечисления — найди направление. Только текст.',
+      500
+    );
+    appData.weekInsight = { text: response.trim(), weekHash: getWeekHash(), generatedAt: Date.now() };
+    sync(); closeSheet();
+    showReveal('вектор недели', 'var(--insight)', appData.weekInsight.text, recent.length + ' ' + plural(recent.length, 'запись', 'записи', 'записей') + ' за 7 дней');
+  } catch (e) {
+    toast('Ошибка: ' + e.message);
+    btn.disabled = false; btn.textContent = 'Попробовать снова';
+  }
 }
 
-// ═══ ASK CLAUDE ═══
-async function askClaude(id,btn){
-  const key=appData.settings?.claudeKey;if(!key){toast('Нужен API ключ ⚙');return;}
-  const e=(appData.entries||[]).find(x=>x.id===id);if(!e)return;
-  btn.disabled=true;btn.innerHTML='<span class="spin"></span>';
-  const ctx=appData.settings?.baseContext||'';
-  const prompts={
-    idea:appData.settings?.ideaPrompt||DEFAULT_IDEA_PROMPT,
-    skill:appData.settings?.skillPrompt||DEFAULT_SKILL_PROMPT,
-    insight:appData.settings?.insightPrompt||DEFAULT_INSIGHT_PROMPT,
-    action:appData.settings?.actionPrompt||DEFAULT_ACTION_PROMPT
-  };
-  const sys=[ctx,prompts[e.type]||''].filter(Boolean).join('\n\n');
-  const userMsg=`[${typeLabel(e.type)}] ${e.date}:\n${e.text}`;
-  try{
-    const r=await callClaudeSystem(sys,userMsg,400);
-    e.response=r.trim();
-    sync();closeSheet();
-    showRevealEntry(e);
-  }catch(err){toast('Ошибка: '+err.message);btn.disabled=false;btn.textContent='Попробовать снова';}
-}
-
-// ═══ REVEAL ═══
-function showRevealEntry(entry){
-  $('revealCard').innerHTML=`
-    <div class="reveal-role">
-      <div class="reveal-role-dot" style="background:${typeColor(entry.type)}"></div>
-      <div class="reveal-role-name" style="color:${typeColor(entry.type)}">${typeIcon(entry.type)} ${typeLabel(entry.type)}</div>
-    </div>
-    <div class="reveal-text">"${esc(entry.response)}"</div>
-    <div class="reveal-src">
-      <div style="margin-top:4px"><b>${entry.title||typeLabel(entry.type)}</b> · ${fmtDate(entry.date)}</div>
-    </div>
-    <div class="reveal-hint">нажми чтобы закрыть</div>`;
-  const w=$('revealWrap');w.classList.remove('out');w.classList.add('on');
-}
-function showRevealGeneric(label,color,text,sub){
-  $('revealCard').innerHTML=`
+// ═══ REVEAL CARD ═══
+function showReveal(label, color, text, sub) {
+  $('revealCard').innerHTML = `
     <div class="reveal-role">
       <div class="reveal-role-dot" style="background:${color}"></div>
       <div class="reveal-role-name" style="color:${color}">${label}</div>
@@ -967,47 +1353,69 @@ function showRevealGeneric(label,color,text,sub){
     <div class="reveal-text">"${esc(text)}"</div>
     <div class="reveal-src"><div style="color:var(--t3)">${sub}</div></div>
     <div class="reveal-hint">нажми чтобы закрыть</div>`;
-  const w=$('revealWrap');w.classList.remove('out');w.classList.add('on');
+  const w = $('revealWrap');
+  w.classList.remove('out'); w.classList.add('on');
 }
-function dismissReveal(){
-  const w=$('revealWrap');w.classList.add('out');
-  setTimeout(()=>{w.classList.remove('on','out');render();},350);
+
+function dismissReveal() {
+  const w = $('revealWrap');
+  w.classList.add('out');
+  setTimeout(() => { w.classList.remove('on', 'out'); render(); }, 350);
 }
 
 // ═══ SETTINGS ═══
-function openSettings(){
-  $('sKey').value=appData.settings?.claudeKey||'';
-  $('sCtx').value=appData.settings?.baseContext||'';
-  $('sIdea').value=appData.settings?.ideaPrompt||DEFAULT_IDEA_PROMPT;
-  $('sSkill').value=appData.settings?.skillPrompt||DEFAULT_SKILL_PROMPT;
-  $('sInsight').value=appData.settings?.insightPrompt||DEFAULT_INSIGHT_PROMPT;
-  $('sAction').value=appData.settings?.actionPrompt||DEFAULT_ACTION_PROMPT;
+function openSettings() {
+  $('sKey').value = appData.settings?.claudeKey || '';
+  $('sCtx').value = appData.settings?.baseContext || '';
+  $('sIdea').value = appData.settings?.ideaPrompt || DEFAULT_IDEA_PROMPT;
+  $('sSkill').value = appData.settings?.skillPrompt || DEFAULT_SKILL_PROMPT;
+  $('sInsight').value = appData.settings?.insightPrompt || DEFAULT_INSIGHT_PROMPT;
+  $('sAction').value = appData.settings?.actionPrompt || DEFAULT_ACTION_PROMPT;
   openSheet('shSettings');
 }
-function saveSettings(){
-  if(!appData.settings)appData.settings={};
-  appData.settings.claudeKey=$('sKey').value.trim();
-  appData.settings.baseContext=$('sCtx').value.trim();
-  appData.settings.ideaPrompt=$('sIdea').value.trim();
-  appData.settings.skillPrompt=$('sSkill').value.trim();
-  appData.settings.insightPrompt=$('sInsight').value.trim();
-  appData.settings.actionPrompt=$('sAction').value.trim();
-  sync();closeSheet();toast('Настройки сохранены');
+
+function saveSettings() {
+  if (!appData.settings) appData.settings = {};
+  appData.settings.claudeKey = $('sKey').value.trim();
+  appData.settings.baseContext = $('sCtx').value.trim();
+  appData.settings.ideaPrompt = $('sIdea').value.trim();
+  appData.settings.skillPrompt = $('sSkill').value.trim();
+  appData.settings.insightPrompt = $('sInsight').value.trim();
+  appData.settings.actionPrompt = $('sAction').value.trim();
+  sync(); closeSheet(); toast('Настройки сохранены');
 }
 
 // ═══ CLAUDE API ═══
-async function callClaude(userMsg,maxTokens=500){return callClaudeSystem('',userMsg,maxTokens);}
-async function callClaudeSystem(sys,userMsg,maxTokens=500){
-  const key=appData.settings?.claudeKey;if(!key)throw new Error('API ключ не задан');
-  const body={model:'claude-sonnet-4-6',max_tokens:maxTokens,messages:[{role:'user',content:userMsg}]};
-  if(sys)body.system=sys;
-  const r=await fetch('https://api.anthropic.com/v1/messages',{
-    method:'POST',
-    headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-    body:JSON.stringify(body)
+async function callClaudeSystem(sys, userMsg, maxTokens = 500) {
+  const key = appData.settings?.claudeKey;
+  if (!key) throw new Error('API ключ не задан');
+  const body = { model: 'claude-sonnet-4-6', max_tokens: maxTokens, messages: [{ role: 'user', content: userMsg }] };
+  if (sys) body.system = sys;
+  const response = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'x-api-key': key, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
+    body: JSON.stringify(body)
   });
-  const raw=await r.text();
-  if(!r.ok){let m='HTTP '+r.status;try{m=JSON.parse(raw)?.error?.message||m;}catch(_){}throw new Error(m);}
+  const raw = await response.text();
+  console.log('[Claude]', response.status, raw.slice(0, 200));
+  if (!response.ok) { let m = 'HTTP ' + response.status; try { m = JSON.parse(raw)?.error?.message || m; } catch (_) {} throw new Error(m); }
+  return JSON.parse(raw).content[0].text;
+}
+
+// Multi-turn for idea dialog (NEW)
+async function callClaudeMessages(sys, messages, maxTokens = 500) {
+  const key = appData.settings?.claudeKey;
+  if (!key) throw new Error('API ключ не задан');
+  const body = { model: 'claude-sonnet-4-6', max_tokens: maxTokens, messages };
+  if (sys) body.system = sys;
+  const response = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'x-api-key': key, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
+    body: JSON.stringify(body)
+  });
+  const raw = await response.text();
+  console.log('[Claude multi]', response.status, raw.slice(0, 200));
+  if (!response.ok) { let m = 'HTTP ' + response.status; try { m = JSON.parse(raw)?.error?.message || m; } catch (_) {} throw new Error(m); }
   return JSON.parse(raw).content[0].text;
 }
 </script>
